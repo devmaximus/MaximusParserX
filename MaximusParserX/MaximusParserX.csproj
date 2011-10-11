@@ -1,0 +1,531 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CF2382FA-F75A-4E37-AE49-277671AD845A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MaximusParserX</RootNamespace>
+    <AssemblyName>MaximusParserX</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>ThirdParty\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.3.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PJLControls">
+      <HintPath>ThirdParty\PJLControls.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ThirdParty\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking">
+      <HintPath>ThirdParty\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+    <Reference Include="zlib.net">
+      <HintPath>ThirdParty\zlib.net.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CodeGenerator\MangosTableCodeGenerator.cs" />
+    <Compile Include="Common\BaseExt.cs" />
+    <Compile Include="Common\CharacterInfo.cs" />
+    <Compile Include="Common\ClientBuildInfo.cs" />
+    <Compile Include="Common\DamageStatistics.cs" />
+    <Compile Include="Common\EnumExt.cs" />
+    <Compile Include="Common\FactionInfo.cs" />
+    <Compile Include="Common\MonsterMove.cs" />
+    <Compile Include="Common\MonsterMoveTransport.cs" />
+    <Compile Include="Common\MovementFall.cs" />
+    <Compile Include="Common\MovementInfo.cs" />
+    <Compile Include="Common\MovementJump.cs" />
+    <Compile Include="Common\MovementTransport.cs" />
+    <Compile Include="Common\NameQueryResponseInfo.cs" />
+    <Compile Include="Common\Option.cs" />
+    <Compile Include="Common\Quaternion.cs" />
+    <Compile Include="Common\ReadingExt.cs" />
+    <Compile Include="Common\SplineInfo.cs" />
+    <Compile Include="Common\StartInfo.cs" />
+    <Compile Include="Common\UpdateField.cs" />
+    <Compile Include="Common\UpdateMask.cs" />
+    <Compile Include="Conversions\CustomFindOpcode.cs" />
+    <Compile Include="Conversions\VerifyAndCleanSniffs.cs" />
+    <Compile Include="Conversions\CustomDumpOpcode.cs" />
+    <Compile Include="Data\MySQLDBBase.cs" />
+    <Compile Include="Dump\SQL\CustomDumpObjectBase.cs" />
+    <Compile Include="Dump\SQL\Custom\creature_equip_template.cs" />
+    <Compile Include="Dump\SQL\Custom\creature_movement_template.cs" />
+    <Compile Include="Dump\SQL\Custom\creature_template.cs" />
+    <Compile Include="Dump\SQL\Custom\creature_template_addon.cs" />
+    <Compile Include="Dump\SQL\Custom\gameobject_spawn.cs" />
+    <Compile Include="Dump\SQL\Custom\gameobject_template.cs" />
+    <Compile Include="Dump\SQL\Custom\gossip_menu.cs" />
+    <Compile Include="Dump\SQL\Custom\gossip_menu_option.cs" />
+    <Compile Include="Dump\SQL\Custom\gossip_poi.cs" />
+    <Compile Include="Dump\SQL\Custom\item_template.cs" />
+    <Compile Include="Dump\SQL\Custom\npc_gossip.cs" />
+    <Compile Include="Dump\SQL\Custom\npc_spellclick_spells.cs" />
+    <Compile Include="Dump\SQL\Custom\npc_text.cs" />
+    <Compile Include="Dump\SQL\Custom\page_text.cs" />
+    <Compile Include="Dump\SQL\Custom\points_of_interest.cs" />
+    <Compile Include="Dump\SQL\Custom\quest_poi.cs" />
+    <Compile Include="Dump\SQL\Custom\quest_poi_points.cs" />
+    <Compile Include="Dump\SQL\Custom\quest_template.cs" />
+    <Compile Include="Dump\SQL\Custom\spell_loot_template.cs" />
+    <Compile Include="Dump\SQL\DumpObjectBase.cs" />
+    <Compile Include="Dump\SQL\GameObjectSpawnHandler.cs" />
+    <Compile Include="Dump\SQL\GossipHandler.cs" />
+    <Compile Include="Dump\SQL\Mangos\achievement_reward.cs" />
+    <Compile Include="Dump\SQL\Mangos\areatrigger_involvedrelation.cs" />
+    <Compile Include="Dump\SQL\Mangos\creature.cs" />
+    <Compile Include="Dump\SQL\Mangos\creature_addon.cs" />
+    <Compile Include="Dump\SQL\Mangos\creature_ai_scripts.cs" />
+    <Compile Include="Dump\SQL\Mangos\creature_ai_summons.cs" />
+    <Compile Include="Dump\SQL\Mangos\creature_ai_texts.cs" />
+    <Compile Include="Dump\SQL\Mangos\creature_battleground.cs" />
+    <Compile Include="Dump\SQL\Mangos\creature_equip_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\creature_involvedrelation.cs" />
+    <Compile Include="Dump\SQL\Mangos\creature_loot_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\creature_model_info.cs" />
+    <Compile Include="Dump\SQL\Mangos\creature_model_race.cs" />
+    <Compile Include="Dump\SQL\Mangos\creature_movement.cs" />
+    <Compile Include="Dump\SQL\Mangos\creature_movement_scripts.cs" />
+    <Compile Include="Dump\SQL\Mangos\creature_movement_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\creature_onkill_reputation.cs" />
+    <Compile Include="Dump\SQL\Mangos\creature_questrelation.cs" />
+    <Compile Include="Dump\SQL\Mangos\creature_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\creature_template_addon.cs" />
+    <Compile Include="Dump\SQL\Mangos\disenchant_loot_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\event_scripts.cs" />
+    <Compile Include="Dump\SQL\Mangos\exploration_basexp.cs" />
+    <Compile Include="Dump\SQL\Mangos\fishing_loot_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\gameobject.cs" />
+    <Compile Include="Dump\SQL\Mangos\gameobject_addon.cs" />
+    <Compile Include="Dump\SQL\Mangos\gameobject_battleground.cs" />
+    <Compile Include="Dump\SQL\Mangos\gameobject_involvedrelation.cs" />
+    <Compile Include="Dump\SQL\Mangos\gameobject_loot_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\gameobject_questrelation.cs" />
+    <Compile Include="Dump\SQL\Mangos\gameobject_scripts.cs" />
+    <Compile Include="Dump\SQL\Mangos\gameobject_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\game_event.cs" />
+    <Compile Include="Dump\SQL\Mangos\game_event_creature.cs" />
+    <Compile Include="Dump\SQL\Mangos\game_event_creature_data.cs" />
+    <Compile Include="Dump\SQL\Mangos\game_event_gameobject.cs" />
+    <Compile Include="Dump\SQL\Mangos\game_event_mail.cs" />
+    <Compile Include="Dump\SQL\Mangos\game_event_quest.cs" />
+    <Compile Include="Dump\SQL\Mangos\game_tele.cs" />
+    <Compile Include="Dump\SQL\Mangos\gossip_menu.cs" />
+    <Compile Include="Dump\SQL\Mangos\gossip_menu_option.cs" />
+    <Compile Include="Dump\SQL\Mangos\gossip_scripts.cs" />
+    <Compile Include="Dump\SQL\Mangos\instance_encounters.cs" />
+    <Compile Include="Dump\SQL\Mangos\instance_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\item_enchantment_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\item_loot_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\item_required_target.cs" />
+    <Compile Include="Dump\SQL\Mangos\item_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\locales_achievement_reward.cs" />
+    <Compile Include="Dump\SQL\Mangos\locales_creature.cs" />
+    <Compile Include="Dump\SQL\Mangos\locales_gameobject.cs" />
+    <Compile Include="Dump\SQL\Mangos\locales_gossip_menu_option.cs" />
+    <Compile Include="Dump\SQL\Mangos\locales_item.cs" />
+    <Compile Include="Dump\SQL\Mangos\locales_npc_text.cs" />
+    <Compile Include="Dump\SQL\Mangos\locales_page_text.cs" />
+    <Compile Include="Dump\SQL\Mangos\locales_points_of_interest.cs" />
+    <Compile Include="Dump\SQL\Mangos\locales_quest.cs" />
+    <Compile Include="Dump\SQL\Mangos\mail_level_reward.cs" />
+    <Compile Include="Dump\SQL\Mangos\mail_loot_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\milling_loot_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\npc_gossip.cs" />
+    <Compile Include="Dump\SQL\Mangos\npc_spellclick_spells.cs" />
+    <Compile Include="Dump\SQL\Mangos\npc_text.cs" />
+    <Compile Include="Dump\SQL\Mangos\npc_trainer.cs" />
+    <Compile Include="Dump\SQL\Mangos\npc_trainer_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\npc_vendor.cs" />
+    <Compile Include="Dump\SQL\Mangos\npc_vendor_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\page_text.cs" />
+    <Compile Include="Dump\SQL\Mangos\pet_levelstats.cs" />
+    <Compile Include="Dump\SQL\Mangos\pet_name_generation.cs" />
+    <Compile Include="Dump\SQL\Mangos\pickpocketing_loot_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\playercreateinfo.cs" />
+    <Compile Include="Dump\SQL\Mangos\playercreateinfo_action.cs" />
+    <Compile Include="Dump\SQL\Mangos\playercreateinfo_item.cs" />
+    <Compile Include="Dump\SQL\Mangos\playercreateinfo_spell.cs" />
+    <Compile Include="Dump\SQL\Mangos\player_classlevelstats.cs" />
+    <Compile Include="Dump\SQL\Mangos\player_levelstats.cs" />
+    <Compile Include="Dump\SQL\Mangos\player_xp_for_level.cs" />
+    <Compile Include="Dump\SQL\Mangos\points_of_interest.cs" />
+    <Compile Include="Dump\SQL\Mangos\pool_creature.cs" />
+    <Compile Include="Dump\SQL\Mangos\pool_creature_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\pool_gameobject.cs" />
+    <Compile Include="Dump\SQL\Mangos\pool_gameobject_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\pool_pool.cs" />
+    <Compile Include="Dump\SQL\Mangos\pool_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\prospecting_loot_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\quest_end_scripts.cs" />
+    <Compile Include="Dump\SQL\Mangos\quest_poi.cs" />
+    <Compile Include="Dump\SQL\Mangos\quest_poi_points.cs" />
+    <Compile Include="Dump\SQL\Mangos\quest_start_scripts.cs" />
+    <Compile Include="Dump\SQL\Mangos\quest_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\reference_loot_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\reputation_reward_rate.cs" />
+    <Compile Include="Dump\SQL\Mangos\reputation_spillover_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\scripted_areatrigger.cs" />
+    <Compile Include="Dump\SQL\Mangos\scripted_event_id.cs" />
+    <Compile Include="Dump\SQL\Mangos\skill_discovery_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\skill_extra_item_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\skill_fishing_base_level.cs" />
+    <Compile Include="Dump\SQL\Mangos\skinning_loot_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\spell_area.cs" />
+    <Compile Include="Dump\SQL\Mangos\spell_bonus_data.cs" />
+    <Compile Include="Dump\SQL\Mangos\spell_chain.cs" />
+    <Compile Include="Dump\SQL\Mangos\spell_elixir.cs" />
+    <Compile Include="Dump\SQL\Mangos\spell_learn_spell.cs" />
+    <Compile Include="Dump\SQL\Mangos\spell_loot_template.cs" />
+    <Compile Include="Dump\SQL\Mangos\spell_pet_auras.cs" />
+    <Compile Include="Dump\SQL\Mangos\spell_proc_event.cs" />
+    <Compile Include="Dump\SQL\Mangos\spell_proc_item_enchant.cs" />
+    <Compile Include="Dump\SQL\Mangos\spell_scripts.cs" />
+    <Compile Include="Dump\SQL\Mangos\spell_script_target.cs" />
+    <Compile Include="Dump\SQL\Mangos\spell_target_position.cs" />
+    <Compile Include="Dump\SQL\Mangos\spell_threat.cs" />
+    <Compile Include="Dump\SQL\QueryResponseHandler.cs" />
+    <Compile Include="Enums\BillingFlag.cs" />
+    <Compile Include="Enums\ClientType.cs" />
+    <Compile Include="Enums\DBCEnums.cs" />
+    <Compile Include="Enums\Direction.cs" />
+    <Compile Include="Enums\Gossip.cs" />
+    <Compile Include="Enums\ItemPrototype.cs" />
+    <Compile Include="Enums\KickReason.cs" />
+    <Compile Include="Enums\MonsterMoveFlag.cs" />
+    <Compile Include="Enums\Player.cs" />
+    <Compile Include="Enums\RealmSplitState.cs" />
+    <Compile Include="Enums\ReputationMgr.cs" />
+    <Compile Include="Enums\SharedDefines.cs" />
+    <Compile Include="Enums\Spell.cs" />
+    <Compile Include="Enums\SpellAuraDefines.cs" />
+    <Compile Include="Enums\Weather.cs" />
+    <Compile Include="Enums\WorldSession.cs" />
+    <Compile Include="Local\Base\DataObjectBase.cs" />
+    <Compile Include="Local\Settings.cs" />
+    <Compile Include="Local\SniffCache.cs" />
+    <Compile Include="Local\SniffDirectory.cs" />
+    <Compile Include="Parsing\Parsers\AccountDataHandler.cs" />
+    <Compile Include="Parsing\Parsers\AchievementHandler.cs" />
+    <Compile Include="Parsing\Parsers\ActionBarHandler.cs" />
+    <Compile Include="Parsing\Parsers\CharacterHandler.cs" />
+    <Compile Include="Parsing\Parsers\ChatHandler.cs" />
+    <Compile Include="Parsing\Parsers\CombatHandler.cs" />
+    <Compile Include="Parsing\Parsers\GameObjectHandler.cs" />
+    <Compile Include="Parsing\Parsers\GossipHandler.cs" />
+    <Compile Include="Parsing\Parsers\InstanceHandler.cs" />
+    <Compile Include="Parsing\Parsers\ItemHandler.cs" />
+    <Compile Include="Parsing\Parsers\MiscellaneousHandler.cs" />
+    <Compile Include="Parsing\Parsers\MiscHandler.cs" />
+    <Compile Include="Parsing\Parsers\MovementHandler.cs" />
+    <Compile Include="Parsing\Parsers\NpcHandler.cs" />
+    <Compile Include="Parsing\Parsers\QueryResponseHandler.cs" />
+    <Compile Include="Parsing\Parsers\QuestHandler.cs" />
+    <Compile Include="Parsing\Parsers\ReputationHandler.cs" />
+    <Compile Include="Parsing\Parsers\SessionHandler.cs" />
+    <Compile Include="Parsing\Parsers\SpellHandler.cs" />
+    <Compile Include="Parsing\Parsers\UnknownHandler.cs" />
+    <Compile Include="Parsing\Parsers\UpdateObjectHandler.cs" />
+    <Compile Include="Parsing\Parsers\WorldStateHandler.cs" />
+    <Compile Include="Reading\DefinitionBase.cs" />
+    <Compile Include="Reading\DefinitionContext.cs" />
+    <Compile Include="Reading\Processor.cs" />
+    <Compile Include="Reading\Readers\TiawpsReader.cs" />
+    <Compile Include="Reading\Readers\ReaderLoader.cs" />
+    <Compile Include="Reading\SearchCriteria.cs" />
+    <Compile Include="UI\Controls\Comparer.cs" />
+    <Compile Include="UI\Controls\ListViewBaseExt.cs" />
+    <Compile Include="UI\Controls\ListViewItemComparer.cs" />
+    <Compile Include="UI\Controls\ListViewSorter.cs" />
+    <Compile Include="UI\Controls\MyTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\NativeInterop.cs" />
+    <Compile Include="UI\frmDump.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmDump.Designer.cs">
+      <DependentUpon>frmDump.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSettings.Designer.cs">
+      <DependentUpon>frmSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Parsing\ParsingHandler.cs" />
+    <Compile Include="Common\Vector2.cs" />
+    <Compile Include="Common\Vector3.cs" />
+    <Compile Include="Common\Vector4.cs" />
+    <Compile Include="Common\WoWGuid.cs" />
+    <Compile Include="Enums\ChatTag.cs" />
+    <Compile Include="Enums\Class.cs" />
+    <Compile Include="Enums\ClientBuild.cs" />
+    <Compile Include="Enums\CreatureRank.cs" />
+    <Compile Include="Enums\GameobjectType.cs" />
+    <Compile Include="Enums\HighGuidMask.cs" />
+    <Compile Include="Enums\HighGuidType.cs" />
+    <Compile Include="Enums\Indices.cs" />
+    <Compile Include="Enums\MoveAnimationState.cs" />
+    <Compile Include="Enums\MoveFlag.cs" />
+    <Compile Include="Enums\MoveFlagExtra.cs" />
+    <Compile Include="Enums\Object.cs" />
+    <Compile Include="Enums\ObjectType.cs" />
+    <Compile Include="Enums\QuestFlag.cs" />
+    <Compile Include="Enums\QuestMethod.cs" />
+    <Compile Include="Enums\QuestType.cs" />
+    <Compile Include="Enums\Race.cs" />
+    <Compile Include="Enums\SpeedType.cs" />
+    <Compile Include="Enums\SplineFlag.cs" />
+    <Compile Include="Enums\UpdateFields.cs" />
+    <Compile Include="Enums\UpdateFlag.cs" />
+    <Compile Include="Enums\UpdateType.cs" />
+    <Compile Include="Reading\Packet.cs" />
+    <Compile Include="Reading\Readers\ReaderBase.cs" />
+    <Compile Include="Reading\ReadingBase.cs" />
+    <Compile Include="Common\SerializationExt.cs" />
+    <Compile Include="Frame\Result.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\Serializer.cs" />
+    <Compile Include="UI\Controls\MyListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\MyOptionList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\MyOptionList.Designer.cs">
+      <DependentUpon>MyOptionList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\MyResultList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\MyResultList.Designer.cs">
+      <DependentUpon>MyResultList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\MyTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\DelegateManager.cs" />
+    <Compile Include="UI\frmBrowseDirectory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmBrowseDirectory.Designer.cs">
+      <DependentUpon>frmBrowseDirectory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmMain.Designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmResultList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmResultList.Designer.cs">
+      <DependentUpon>frmResultList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSniff.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSniff.Designer.cs">
+      <DependentUpon>frmSniff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSniffList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSniffList.Designer.cs">
+      <DependentUpon>frmSniffList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSniffDirectory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSniffDirectory.Designer.cs">
+      <DependentUpon>frmSniffDirectory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSniffDirectoryList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSniffDirectoryList.Designer.cs">
+      <DependentUpon>frmSniffDirectoryList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\StatusStripProgress.cs" />
+    <Compile Include="UI\UIManager.cs" />
+    <Compile Include="Parsing\Version\v2_3_0_7561\Enums\Opcodes.cs" />
+    <Compile Include="Parsing\Version\v2_3_2_7741\Enums\Opcodes.cs" />
+    <Compile Include="Parsing\Version\v2_3_3_7799\Enums\Opcodes.cs" />
+    <Compile Include="Parsing\Version\v2_4_0_8089\Enums\Opcodes.cs" />
+    <Compile Include="Parsing\Version\v2_4_1_8125\Enums\Opcodes.cs" />
+    <Compile Include="Parsing\Version\v3_0_3_9183\Enums\Opcodes.cs" />
+    <Compile Include="Parsing\Version\v3_0_8_9464\Enums\Opcodes.cs" />
+    <Compile Include="Parsing\Version\v3_0_8_9506\Enums\Opcodes.cs" />
+    <Compile Include="Parsing\Version\v3_0_9_9551\Enums\Opcodes.cs" />
+    <Compile Include="Parsing\Version\v3_1_1_9835\Enums\Opcodes.cs" />
+    <Compile Include="Parsing\Version\v3_1_2_9901\Enums\Opcodes.cs" />
+    <Compile Include="Parsing\Version\v3_1_3_9947\Enums\Opcodes.cs" />
+    <Compile Include="Parsing\Version\v3_2_0_10314\Enums\Opcodes.cs" />
+    <Compile Include="Parsing\Version\v3_2_0_10314\Enums\UpdateFields.cs" />
+    <Compile Include="Parsing\Version\v3_2_2_10482\Enums\Opcodes.cs" />
+    <Compile Include="Parsing\Version\v3_2_2_10482\Enums\UpdateFields.cs" />
+    <Compile Include="Parsing\Version\v3_2_2_10505\Enums\Opcodes.cs" />
+    <Compile Include="Parsing\Version\v3_2_2_10505\Enums\UpdateFields.cs" />
+    <Compile Include="Parsing\Version\v3_0_9_9551\Enums\UpdateFields.cs" />
+    <Compile Include="Parsing\Version\v3_1_1_9835\Enums\UpdateFields.cs" />
+    <Compile Include="Parsing\Version\v3_1_2_9901\Enums\UpdateFields.cs" />
+    <Compile Include="Parsing\Version\v3_1_3_9947\Enums\UpdateFields.cs" />
+    <Compile Include="Parsing\Version\v3_0_8_9506\Enums\UpdateFields.cs" />
+    <Compile Include="Parsing\Version\v3_0_8_9464\Enums\UpdateFields.cs" />
+    <Compile Include="Parsing\Version\v3_0_3_9183\Enums\UpdateFields.cs" />
+    <Compile Include="Parsing\Version\v2_4_1_8125\Enums\UpdateFields.cs" />
+    <Compile Include="Parsing\Version\v2_4_0_8089\Enums\UpdateFields.cs" />
+    <Compile Include="Parsing\Version\v2_3_3_7799\Enums\UpdateFields.cs" />
+    <Compile Include="Parsing\Version\v2_3_2_7741\Enums\UpdateFields.cs" />
+    <Compile Include="Parsing\Version\v2_3_0_7561\Enums\UpdateFields.cs" />
+    <Compile Include="WoW\CacheObjects\CacheContainer.cs" />
+    <Compile Include="WoW\CacheObjects\ItemText.cs" />
+    <Compile Include="WoW\CacheObjects\ItemName.cs" />
+    <Compile Include="WoW\CacheObjects\PetName.cs" />
+    <Compile Include="WoW\CacheObjects\PlayerName.cs" />
+    <Compile Include="WoW\Core.cs" />
+    <Compile Include="WoW\ObjectBase.cs" />
+    <Compile Include="WoW\Objects\AIGroup.cs" />
+    <Compile Include="WoW\Objects\Areatrigger.cs" />
+    <Compile Include="WoW\Objects\Container.cs" />
+    <Compile Include="WoW\Objects\Corpse.cs" />
+    <Compile Include="WoW\Objects\DynamicObject.cs" />
+    <Compile Include="WoW\Objects\GameObject.cs" />
+    <Compile Include="WoW\Objects\GenericObject.cs" />
+    <Compile Include="WoW\Objects\Item.cs" />
+    <Compile Include="WoW\Objects\Player.cs" />
+    <Compile Include="WoW\Objects\PlayerMe.cs" />
+    <Compile Include="WoW\Objects\Unit.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="UI\Controls\MyListView.resx">
+      <DependentUpon>MyListView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\MyOptionList.resx">
+      <DependentUpon>MyOptionList.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\MyResultList.resx">
+      <DependentUpon>MyResultList.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmBrowseDirectory.resx">
+      <DependentUpon>frmBrowseDirectory.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmDump.resx">
+      <DependentUpon>frmDump.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSettings.resx">
+      <DependentUpon>frmSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSniff.resx">
+      <DependentUpon>frmSniff.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSniffList.resx">
+      <DependentUpon>frmSniffList.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSniffDirectory.resx">
+      <DependentUpon>frmSniffDirectory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSniffDirectoryList.resx">
+      <DependentUpon>frmSniffDirectoryList.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Parsing\Version\v4_0_6_13623\Enums\" />
+    <Folder Include="Parsing\Version\v4_1_0_13914\Enums\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeGenerator\MangosTableCodeGeneratorTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ThirdParty\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="ThirdParty\PJLControls.dll" />
+    <Content Include="ThirdParty\PJLControls.xml" />
+    <Content Include="ThirdParty\System.Data.SQLite.dll" />
+    <Content Include="ThirdParty\WeifenLuo.WinFormsUI.Docking.dll" />
+    <Content Include="ThirdParty\zlib.net.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
