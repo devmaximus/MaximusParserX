@@ -7,11 +7,6 @@ namespace MaximusParserX.Conversions
 {
     public static class VerifyAndCleanSniffs
     {
-        public static void ProcessSniffs()
-        {
-            ProcessSniffs(@"E:\HFS\WOWDEV\SNIFFS", @"E:\HFS\WOWDEV\SNIFFS_CLEAN\");
-        }
-
         public static void ProcessSniffs(string fromdir, string todir)
         {
             var files = System.IO.Directory.GetFiles(fromdir, "*.sqlite", System.IO.SearchOption.AllDirectories);

@@ -22,9 +22,9 @@ namespace MaximusParserX.Conversions
     {
 
 
-        public static void DumpOpcodes()
+        public static void DumpOpcodes(string source)
         {
-            var files = System.IO.Directory.GetFiles(@"E:\HFS\WOWDEV\SNIFFS_CLEAN\", "*.sqlite", System.IO.SearchOption.AllDirectories).OrderBy(t => t);
+            var files = System.IO.Directory.GetFiles(source, "*.sqlite", System.IO.SearchOption.AllDirectories).OrderBy(t => t);
 
             var versionOpcodeList = new System.Collections.Generic.SortedList<uint, ClientBuildCache>();
 

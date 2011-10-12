@@ -7,9 +7,9 @@ namespace MaximusParserX.Conversions
 {
     public static class CustomFindOpcode
     {
-        public static void FindOpcodes(string query)
+        public static void FindOpcodes(string source, string query)
         {
-            var files = System.IO.Directory.GetFiles(@"E:\HFS\WOWDEV\SNIFFS_CLEAN\", "*.sqlite", System.IO.SearchOption.AllDirectories).OrderByDescending(t => t);
+            var files = System.IO.Directory.GetFiles(source, "*.sqlite", System.IO.SearchOption.AllDirectories).OrderByDescending(t => t);
 
             foreach (var file in files)
             {

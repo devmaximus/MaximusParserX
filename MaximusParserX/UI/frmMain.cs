@@ -94,12 +94,12 @@ namespace MaximusParserX.UI
 
         private void btnDumpOpcodes_Click(object sender, EventArgs e)
         {
-            Conversions.CustomDumpOpcode.DumpOpcodes();
+            //Conversions.CustomDumpOpcode.DumpOpcodes();
         }
 
         private void btnFindOpcodes_Click(object sender, EventArgs e)
         {
-            Conversions.CustomFindOpcode.FindOpcodes("");
+           // Conversions.CustomFindOpcode.FindOpcodes();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
