@@ -7,14 +7,14 @@ namespace MaximusParserX.WoW.CacheObjects
 {
     public class PlayerName
     {
-        public WoWGuid guid { get; set; }
-        public string name { get; set; }
-        public string bgrealm { get; set; }
-        public byte unk { get; set; }
-        public byte race { get; set; }
-        public byte gender { get; set; }
-        public byte class_ { get; set; }
-        public byte declined { get; set; }
-        public List<string> declinename = new List<string>();
+        public WoWGuid Guid { get; set; }
+        public string Name { get; set; }
+        public string BGRealm { get; set; }
+        public byte Unk { get; set; }
+        public Race Race { get; set; }
+        public Gender Gender { get; set; }
+        public Class Class { get; set; }
+        public byte Declined { get; set; }
+        public List<string> DeclinedNames = new List<string>();
     }
 }

@@ -28,6 +28,10 @@ namespace MaximusParserX.Parsing.Parsers
         public override bool Parse()
         {
             ResetPosition();
+            if (ClientBuildAmount <= 11403)
+            {
+                var guid = ReadPackedWoWGuid("guid");
+            }
             var type = ReadEnum<Powers>("Power", TypeCode.Byte);
             var value = ReadInt32("Power value");
             return Validate();
@@ -89,7 +93,7 @@ namespace MaximusParserX.Parsing.Parsers
         public override bool Parse()
         {
             ResetPosition();
-            var pguid = ReadPackedWoWGuid("pguid");
+            var targetguid = ReadPackedWoWGuid("targetguid");
 
             while (AvailableBytes > 0)
             {
@@ -108,6 +112,12 @@ namespace MaximusParserX.Parsing.Parsers
 
                     if (!flags.HasFlag(AuraFlags.AFLAG_NOT_CASTER))
                     {
+                        //UInt32 UInt32_1 = ReadUInt32();
+                        //UInt32 UInt32_2 = ReadUInt32();
+                        //UInt32 UInt32_3 = ReadUInt32();
+                        //UInt32 UInt32_4 = ReadUInt32();
+                        //UInt32 UInt32_5 = ReadUInt32();
+
                         var unkGuid = ReadPackedWoWGuid("unkGuid");
                     }
 

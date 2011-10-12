@@ -54,11 +54,11 @@ namespace MaximusParserX.WoW
             }
         }
 
-        public int OBJECT_FIELD_ENTRY
+        public uint OBJECT_FIELD_ENTRY
         {
             get
             {
-                return this.UpdateFields[(int)MaximusParserX.UpdateFields.OBJECT_FIELD_ENTRY].Int32Value;
+                return (uint)this.UpdateFields[(int)MaximusParserX.UpdateFields.OBJECT_FIELD_ENTRY].Int32Value;
             }
         }
 
@@ -69,5 +69,55 @@ namespace MaximusParserX.WoW
                 return this.UpdateFields[(int)MaximusParserX.UpdateFields.OBJECT_FIELD_SCALE_X].FloatValue;
             }
         }
+
+        public virtual float X
+        {
+            get
+            {
+                if (MovementInfo != null && MovementInfo.PositionInfo != null)
+                    return MovementInfo.PositionInfo.X;
+                else
+                    return 0f;
+            }
+        }
+
+        public virtual float Y
+        {
+            get
+            {
+                if (MovementInfo != null && MovementInfo.PositionInfo != null)
+                    return MovementInfo.PositionInfo.Y;
+                else
+                    return 0f;
+            }
+        }
+
+        public virtual float Z
+        {
+            get
+            {
+                if (MovementInfo != null && MovementInfo.PositionInfo != null)
+                    return MovementInfo.PositionInfo.Z;
+                else
+                    return 0f;
+            }
+        }
+
+        public virtual float O
+        {
+            get
+            {
+                if (MovementInfo != null && MovementInfo.PositionInfo != null)
+                    return MovementInfo.PositionInfo.O;
+                else
+                    return 0f;
+            }
+        }
+
+        public bool HasPosition()
+        {
+            return !(X == 0f && Y == 0f && Z == 0f && O == 0f);
+        }
+
     }
 }

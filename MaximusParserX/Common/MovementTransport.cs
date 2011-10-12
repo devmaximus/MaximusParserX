@@ -20,9 +20,9 @@ namespace MaximusParserX
 
         public MovementTransport(ReadingBase reader, int clientbuild, bool readTime2)
         {
-            var position = reader.Position;
+            reader.SetBookmarkPosition();
 
-            reader.Position = position;
+            reader.GotoBookmarkPosition();
 
             if (clientbuild <= 9551)
             {

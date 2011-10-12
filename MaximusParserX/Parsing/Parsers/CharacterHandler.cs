@@ -62,7 +62,7 @@ namespace MaximusParserX.Parsing.Parsers
         public override bool Parse()
         {
             ResetPosition();
-            var result = ReadEnum < ResponseCodes>("ResponseCodes", TypeCode.Byte);
+            var result = ReadEnum<ResponseCodes>("ResponseCodes", TypeCode.Byte);
 
             if (result == ResponseCodes.RESPONSE_SUCCESS)
             {
@@ -176,7 +176,7 @@ namespace MaximusParserX.Parsing.Parsers
             {
                 var guid = ReadWoWGuid("guid");
                 var name = ReadCString("name");
-                var race = Read<Race>("Race");
+                var race = ReadEnum<Race>("Race");
                 var clss = ReadEnum<Class>("Class");
                 var gender = ReadEnum<Gender>("Gender");
                 var skin = ReadByte("skin");
@@ -196,20 +196,24 @@ namespace MaximusParserX.Parsing.Parsers
                 var petLevel = ReadInt32("petLevel");
                 var petFamily = ReadEnum<CreatureFamily>("CreatureFamily", TypeCode.Int32);
 
-                for (var j = 0; j < 19; j++)
+                var auracount = 19;
+
+                for (var j = 0; j < auracount; j++)
                 {
-                    var dispId = ReadInt32("dispId");
-                    var invType = ReadEnum<InventoryType>("invType");
-                    var auraId = ReadInt32("auraId");
+                    var dispId = ReadInt32(j, "dispId");
+                    var invType = ReadEnum<InventoryType>(j, "invType");
+                    var auraId = ReadInt32(j, "auraId");
                 }
 
-                for (var j = 0; j < 4; j++)
+                var bagcount = 4;
+
+                for (var j = 0; j < bagcount; j++)
                 {
-                    var bagDispId = ReadInt32("bagDispId");
+                    var bagDispId = ReadInt32(j, "bagDispId");
 
-                    var bagInvType = ReadEnum<InventoryType>("bagInvType");
+                    var bagInvType = ReadEnum<InventoryType>(j, "bagInvType");
 
-                    var bagAuraId = ReadInt32("bagAuraId");
+                    var bagAuraId = ReadInt32(j, "bagAuraId");
                 }
 
                 if (firstLogin)

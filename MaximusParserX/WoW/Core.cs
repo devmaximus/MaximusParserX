@@ -11,6 +11,8 @@ namespace MaximusParserX.WoW
 
         public static readonly Dictionary<uint, Dictionary<ulong, ObjectBase>> Objects = new Dictionary<uint, Dictionary<ulong, ObjectBase>>();
 
+        public PlayerMe CurrentPlayer { get; private set; }
+
         public Int32 CurrentPlayerPhaseMask { get; private set; }
 
         public UInt32 PreviousPlayerMapID { get; private set; }
@@ -28,7 +30,7 @@ namespace MaximusParserX.WoW
         public Int32 ClientBuildAmount { get; private set; }
 
         public CacheObjects.CacheContainer Cache = new CacheObjects.CacheContainer();
-
+ 
         public Core(UI.DelegateManager delegateManager, int clientbuildamount)
         {
             this.ClientBuildAmount = clientbuildamount;
@@ -40,28 +42,33 @@ namespace MaximusParserX.WoW
         {
             var key = guid.Full;
             ObjectBase obj = null;
-
-
-            if (Objects[CurrentPlayerMapID].TryGetValue(key, out obj))
-                return obj;
+            if (CurrentPlayerWoWGuid == guid)
+            {
+                return CurrentPlayer;
+            }
             else
             {
-                switch (typeid)
+                if (Objects[CurrentPlayerMapID].TryGetValue(key, out obj))
+                    return obj;
+                else
                 {
-                    case TypeID.TYPEID_CORPSE: obj = new Corpse(this, guid, typeid); break;
-                    case TypeID.TYPEID_OBJECT: obj = new GenericObject(this, guid, typeid); break;
-                    case TypeID.TYPEID_ITEM: obj = new Item(this, guid, typeid); break;
-                    case TypeID.TYPEID_CONTAINER: obj = new Container(this, guid, typeid); break;
-                    case TypeID.TYPEID_UNIT: obj = new Unit(this, guid, typeid); break;
-                    case TypeID.TYPEID_PLAYER: obj = new Player(this, guid, typeid); break;
-                    case TypeID.TYPEID_GAMEOBJECT: obj = new GameObject(this, guid, typeid); break;
-                    case TypeID.TYPEID_DYNAMICOBJECT: obj = new DynamicObject(this, guid, typeid); break;
-                    case TypeID.TYPEID_AIGROUP: obj = new AIGroup(this, guid, typeid); break;
-                    case TypeID.TYPEID_AREATRIGGER: obj = new Areatrigger(this, guid, typeid); break;
-                }
+                    switch (typeid)
+                    {
+                        case TypeID.TYPEID_CORPSE: obj = new Corpse(this, guid, typeid); break;
+                        case TypeID.TYPEID_OBJECT: obj = new GenericObject(this, guid, typeid); break;
+                        case TypeID.TYPEID_ITEM: obj = new Item(this, guid, typeid); break;
+                        case TypeID.TYPEID_CONTAINER: obj = new Container(this, guid, typeid); break;
+                        case TypeID.TYPEID_UNIT: obj = new Unit(this, guid, typeid); break;
+                        case TypeID.TYPEID_PLAYER: obj = new Player(this, guid, typeid); break;
+                        case TypeID.TYPEID_GAMEOBJECT: obj = new GameObject(this, guid, typeid); break;
+                        case TypeID.TYPEID_DYNAMICOBJECT: obj = new DynamicObject(this, guid, typeid); break;
+                        case TypeID.TYPEID_AIGROUP: obj = new AIGroup(this, guid, typeid); break;
+                        case TypeID.TYPEID_AREATRIGGER: obj = new Areatrigger(this, guid, typeid); break;
+                    }
 
-                Objects[CurrentPlayerMapID].Add(key, obj);
-                return obj;
+                    Objects[CurrentPlayerMapID].Add(key, obj);
+                    return obj;
+                }
             }
         }
 
@@ -69,10 +76,17 @@ namespace MaximusParserX.WoW
         {
             var key = guid.Full;
             ObjectBase obj = null;
-            if (Objects[CurrentPlayerMapID].TryGetValue(key, out obj))
-                return obj;
+            if (CurrentPlayerWoWGuid == guid)
+            {
+                return CurrentPlayer;
+            }
             else
-                return null;
+            {
+                if (Objects[CurrentPlayerMapID].TryGetValue(key, out obj))
+                    return obj;
+                else
+                    return null;
+            }
         }
 
         public void AddOrUpdateObject(ObjectBase obj)
@@ -91,15 +105,16 @@ namespace MaximusParserX.WoW
                 Objects[CurrentPlayerMapID].Remove(key);
         }
 
-
         public void SetCurrentPlayerWoWGuid(WoWGuid currentplayerwowguid)
         {
             CurrentPlayerWoWGuid = currentplayerwowguid;
+            CurrentPlayer = new PlayerMe(this, currentplayerwowguid, TypeID.TYPEID_PLAYER);
         }
 
         public void SetCurrentPlayerLevel(Int32 currentplayerlevel)
         {
             CurrentPlayerLevel = currentplayerlevel;
+            CurrentPlayer.Level = currentplayerlevel;
         }
 
         public void SetCurrentPlayerPhaseMask(Int32 phasemask)
@@ -119,9 +134,7 @@ namespace MaximusParserX.WoW
             if (this.CurrentPlayerMapID != mapid)
             {
                 CurrentPlayerInstanceDifficulty = null;
-                //Console.WriteLine("CurrentPlayerMapID changed from {0} to {1}.", CurrentPlayerMapID, mapid);
             }
-
 
             this.CurrentPlayerMapID = mapid;
 
@@ -130,10 +143,8 @@ namespace MaximusParserX.WoW
 
         public void SetCurrentPlayerPosition(Vector4 position)
         {
-            //if (this.CurrentPlayerPosition != position)
-            //    Console.WriteLine("CurrentPlayerPosition changed from {0} to {1}.", CurrentPlayerPosition, position);
-
             this.CurrentPlayerPosition = position;
+            this.CurrentPlayer.MovementInfo.PositionInfo = position;
         }
 
         public void SetPreviousPlayerMapID()
@@ -143,14 +154,13 @@ namespace MaximusParserX.WoW
 
         public void ResetPlayerMapID()
         {
-            //Console.WriteLine("Reseting CurrentPlayerMapID from {0} to {1}.", CurrentPlayerPosition, this.PreviousPlayerMapID);
             this.CurrentPlayerMapID = this.PreviousPlayerMapID;
         }
 
         public void LogOutCurrentPlayer()
         {
             Objects.Clear();
-
+            CurrentPlayer = null;
             CurrentPlayerWoWGuid = null;
             CurrentPlayerPhaseMask = 1;
             PreviousPlayerMapID = 0;

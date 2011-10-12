@@ -153,23 +153,6 @@ namespace MaximusParserX.Reading
             return result;
         }
 
-        public virtual bool ValidateMovementOpcode(string parentOpcodeName, long position, long size)
-        {
-            var leftovers = CalcAvailableBytesCustom(position, size);
-
-            if (leftovers > 0)
-            {
-                Context.Result.AddError("{0} has {1} bytes left.", OpcodeName, leftovers);
-            }
-
-            return leftovers == 0;
-        }
-
-        public virtual bool IsValidSize()
-        {
-            return base.BaseStream.Length < 50000;
-        }
-
         public string ReaderFileName
         {
             get

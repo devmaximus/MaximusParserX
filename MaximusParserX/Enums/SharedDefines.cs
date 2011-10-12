@@ -12,7 +12,7 @@ namespace MaximusParserX
         GENDER_NONE = 2
     };
 
-    public enum Races
+    public enum Races : uint
     {
         RACE_HUMAN = 1,
         RACE_ORC = 2,
@@ -1602,111 +1602,111 @@ namespace MaximusParserX
 
     public enum CreatureType
     {
-        CREATURE_TYPE_BEAST = 1,
-        CREATURE_TYPE_DRAGONKIN = 2,
-        CREATURE_TYPE_DEMON = 3,
-        CREATURE_TYPE_ELEMENTAL = 4,
-        CREATURE_TYPE_GIANT = 5,
-        CREATURE_TYPE_UNDEAD = 6,
-        CREATURE_TYPE_HUMANOID = 7,
-        CREATURE_TYPE_CRITTER = 8,
-        CREATURE_TYPE_MECHANICAL = 9,
-        CREATURE_TYPE_NOT_SPECIFIED = 10,
-        CREATURE_TYPE_TOTEM = 11,
-        CREATURE_TYPE_NON_COMBAT_PET = 12,
-        CREATURE_TYPE_GAS_CLOUD = 13
+        BEAST = 1,
+        DRAGONKIN = 2,
+        DEMON = 3,
+        ELEMENTAL = 4,
+        GIANT = 5,
+        UNDEAD = 6,
+        HUMANOID = 7,
+        CRITTER = 8,
+        MECHANICAL = 9,
+        NOT_SPECIFIED = 10,
+        TOTEM = 11,
+        NON_COMBAT_PET = 12,
+        GAS_CLOUD = 13
     };
 
     public enum CreatureFamily : int
     {
-        CREATURE_FAMILY_WOLF = 1,
-        CREATURE_FAMILY_CAT = 2,
-        CREATURE_FAMILY_SPIDER = 3,
-        CREATURE_FAMILY_BEAR = 4,
-        CREATURE_FAMILY_BOAR = 5,
-        CREATURE_FAMILY_CROCOLISK = 6,
-        CREATURE_FAMILY_CARRION_BIRD = 7,
-        CREATURE_FAMILY_CRAB = 8,
-        CREATURE_FAMILY_GORILLA = 9,
-        CREATURE_FAMILY_HORSE_CUSTOM = 10,                    // not exist in DBC but used for horse like beasts in DB
-        CREATURE_FAMILY_RAPTOR = 11,
-        CREATURE_FAMILY_TALLSTRIDER = 12,
-        CREATURE_FAMILY_FELHUNTER = 15,
-        CREATURE_FAMILY_VOIDWALKER = 16,
-        CREATURE_FAMILY_SUCCUBUS = 17,
-        CREATURE_FAMILY_DOOMGUARD = 19,
-        CREATURE_FAMILY_SCORPID = 20,
-        CREATURE_FAMILY_TURTLE = 21,
-        CREATURE_FAMILY_IMP = 23,
-        CREATURE_FAMILY_BAT = 24,
-        CREATURE_FAMILY_HYENA = 25,
-        CREATURE_FAMILY_BIRD_OF_PREY = 26,
-        CREATURE_FAMILY_WIND_SERPENT = 27,
-        CREATURE_FAMILY_REMOTE_CONTROL = 28,
-        CREATURE_FAMILY_FELGUARD = 29,
-        CREATURE_FAMILY_DRAGONHAWK = 30,
-        CREATURE_FAMILY_RAVAGER = 31,
-        CREATURE_FAMILY_WARP_STALKER = 32,
-        CREATURE_FAMILY_SPOREBAT = 33,
-        CREATURE_FAMILY_NETHER_RAY = 34,
-        CREATURE_FAMILY_SERPENT = 35,
-        CREATURE_FAMILY_MOTH = 37,
-        CREATURE_FAMILY_CHIMAERA = 38,
-        CREATURE_FAMILY_DEVILSAUR = 39,
-        CREATURE_FAMILY_GHOUL = 40,
-        CREATURE_FAMILY_SILITHID = 41,
-        CREATURE_FAMILY_WORM = 42,
-        CREATURE_FAMILY_RHINO = 43,
-        CREATURE_FAMILY_WASP = 44,
-        CREATURE_FAMILY_CORE_HOUND = 45,
-        CREATURE_FAMILY_SPIRIT_BEAST = 46
+        WOLF = 1,
+        CAT = 2,
+        SPIDER = 3,
+        BEAR = 4,
+        BOAR = 5,
+        CROCOLISK = 6,
+        CARRION_BIRD = 7,
+        CRAB = 8,
+        GORILLA = 9,
+        HORSE_CUSTOM = 10,                    // not exist in DBC but used for horse like beasts in DB
+        RAPTOR = 11,
+        TALLSTRIDER = 12,
+        FELHUNTER = 15,
+        VOIDWALKER = 16,
+        SUCCUBUS = 17,
+        DOOMGUARD = 19,
+        SCORPID = 20,
+        TURTLE = 21,
+        IMP = 23,
+        BAT = 24,
+        HYENA = 25,
+        BIRD_OF_PREY = 26,
+        WIND_SERPENT = 27,
+        REMOTE_CONTROL = 28,
+        FELGUARD = 29,
+        DRAGONHAWK = 30,
+        RAVAGER = 31,
+        WARP_STALKER = 32,
+        SPOREBAT = 33,
+        NETHER_RAY = 34,
+        SERPENT = 35,
+        MOTH = 37,
+        CHIMAERA = 38,
+        DEVILSAUR = 39,
+        GHOUL = 40,
+        SILITHID = 41,
+        WORM = 42,
+        RHINO = 43,
+        WASP = 44,
+        CORE_HOUND = 45,
+        SPIRIT_BEAST = 46
     };
 
     [Flags]
     public enum CreatureTypeFlags : uint
     {
-        CREATURE_TYPEFLAGS_TAMEABLE = 0x00000001,       // Tameable by any hunter
-        CREATURE_TYPEFLAGS_GHOST_VISIBLE = 0x00000002,       // Creatures which can _also_ be seen when player is a ghost, used in CanInteract function by client, can't be attacked
-        CREATURE_TYPEFLAGS_UNK3 = 0x00000004,       // "BOSS" flag for tooltips
-        CREATURE_TYPEFLAGS_UNK4 = 0x00000008,
-        CREATURE_TYPEFLAGS_UNK5 = 0x00000010,       // controls something in client tooltip related to creature faction
-        CREATURE_TYPEFLAGS_UNK6 = 0x00000020,       // may be sound related
-        CREATURE_TYPEFLAGS_UNK7 = 0x00000040,       // may be related to attackable / not attackable creatures with spells, used together with lua_IsHelpfulSpell/lua_IsHarmfulSpell
-        CREATURE_TYPEFLAGS_UNK8 = 0x00000080,       // has something to do with unit interaction / quest status requests
-        CREATURE_TYPEFLAGS_HERBLOOT = 0x00000100,       // Can be looted by herbalist
-        CREATURE_TYPEFLAGS_MININGLOOT = 0x00000200,       // Can be looted by miner
-        CREATURE_TYPEFLAGS_UNK11 = 0x00000400,       // no idea, but it used by client
-        CREATURE_TYPEFLAGS_UNK12 = 0x00000800,       // related to possibility to cast spells while mounted
-        CREATURE_TYPEFLAGS_CAN_ASSIST = 0x00001000,       // Can aid any player (and group) in combat. Typically seen for escorting NPC's
-        CREATURE_TYPEFLAGS_UNK14 = 0x00002000,       // checked from calls in Lua_PetHasActionBar
-        CREATURE_TYPEFLAGS_UNK15 = 0x00004000,       // Lua_UnitGUID, client does guid_low &= 0xFF000000 if this flag is set
-        CREATURE_TYPEFLAGS_ENGINEERLOOT = 0x00008000,       // Can be looted by engineer
-        CREATURE_TYPEFLAGS_EXOTIC = 0x00010000,       // Can be tamed by hunter as exotic pet
-        CREATURE_TYPEFLAGS_UNK18 = 0x00020000,       // related to CreatureDisplayInfo and scaling in some way
-        CREATURE_TYPEFLAGS_UNK19 = 0x00040000,       // ? Related to vehicle/siege weapons?
-        CREATURE_TYPEFLAGS_UNK20 = 0x00080000,       // may be has something to do with missiles
-        CREATURE_TYPEFLAGS_UNK21 = 0x00100000,       // no idea, but it used by client, may be related to rendering
-        CREATURE_TYPEFLAGS_UNK22 = 0x00200000,       // may be has something to do with animation (disable animation?)
-        CREATURE_TYPEFLAGS_UNK23 = 0x00400000,       // this one probably controls some creature visual
-        CREATURE_TYPEFLAGS_SQUIRE = 0x00800000,       // First seen in 3.2.2. Related to banner/backpack of creature/companion, used in CanInteract function by client
-        CREATURE_TYPEFLAGS_UNK25 = 0x01000000,       // pet sounds related?
-        CREATURE_TYPEFLAGS_UNK26 = 0x02000000,       // this one probably controls some creature visual
-        CREATURE_TYPEFLAGS_UNK27 = 0x04000000,       // creature has no type, or forces creature to be considered as in party, may be related to creature assistance
-        CREATURE_TYPEFLAGS_UNK28 = 0x08000000,       // used in Lua_ForceGossip
-        CREATURE_TYPEFLAGS_UNK29 = 0x10000000,       // no idea, but it used by client
-        CREATURE_TYPEFLAGS_UNK30 = 0x20000000,
-        CREATURE_TYPEFLAGS_UNK31 = 0x40000000,
-        CREATURE_TYPEFLAGS_QUEST_BOSS = 0x80000000,       // Lua_UnitIsQuestBoss
+        TAMEABLE = 0x00000001,       // Tameable by any hunter
+        GHOST_VISIBLE = 0x00000002,       // Creatures which can _also_ be seen when player is a ghost, used in CanInteract function by client, can't be attacked
+        UNK3 = 0x00000004,       // "BOSS" flag for tooltips
+        UNK4 = 0x00000008,
+        UNK5 = 0x00000010,       // controls something in client tooltip related to creature faction
+        UNK6 = 0x00000020,       // may be sound related
+        UNK7 = 0x00000040,       // may be related to attackable / not attackable creatures with spells, used together with lua_IsHelpfulSpell/lua_IsHarmfulSpell
+        UNK8 = 0x00000080,       // has something to do with unit interaction / quest status requests
+        HERBLOOT = 0x00000100,       // Can be looted by herbalist
+        MININGLOOT = 0x00000200,       // Can be looted by miner
+        UNK11 = 0x00000400,       // no idea, but it used by client
+        UNK12 = 0x00000800,       // related to possibility to cast spells while mounted
+        CAN_ASSIST = 0x00001000,       // Can aid any player (and group) in combat. Typically seen for escorting NPC's
+        UNK14 = 0x00002000,       // checked from calls in Lua_PetHasActionBar
+        UNK15 = 0x00004000,       // Lua_UnitGUID, client does guid_low &= 0xFF000000 if this flag is set
+        ENGINEERLOOT = 0x00008000,       // Can be looted by engineer
+        EXOTIC = 0x00010000,       // Can be tamed by hunter as exotic pet
+        UNK18 = 0x00020000,       // related to CreatureDisplayInfo and scaling in some way
+        UNK19 = 0x00040000,       // ? Related to vehicle/siege weapons?
+        UNK20 = 0x00080000,       // may be has something to do with missiles
+        UNK21 = 0x00100000,       // no idea, but it used by client, may be related to rendering
+        UNK22 = 0x00200000,       // may be has something to do with animation (disable animation?)
+        UNK23 = 0x00400000,       // this one probably controls some creature visual
+        SQUIRE = 0x00800000,       // First seen in 3.2.2. Related to banner/backpack of creature/companion, used in CanInteract function by client
+        UNK25 = 0x01000000,       // pet sounds related?
+        UNK26 = 0x02000000,       // this one probably controls some creature visual
+        UNK27 = 0x04000000,       // creature has no type, or forces creature to be considered as in party, may be related to creature assistance
+        UNK28 = 0x08000000,       // used in Lua_ForceGossip
+        UNK29 = 0x10000000,       // no idea, but it used by client
+        UNK30 = 0x20000000,
+        UNK31 = 0x40000000,
+        QUEST_BOSS = 0x80000000,       // Lua_UnitIsQuestBoss
     };
 
     public enum CreatureEliteType
     {
-        CREATURE_ELITE_NORMAL = 0,
-        CREATURE_ELITE_ELITE = 1,
-        CREATURE_ELITE_RAREELITE = 2,
-        CREATURE_ELITE_WORLDBOSS = 3,
-        CREATURE_ELITE_RARE = 4,
-        CREATURE_UNKNOWN = 5                      // found in 2.2.3 for 2 mobs
+        NORMAL = 0,
+        ELITE = 1,
+        RAREELITE = 2,
+        WORLDBOSS = 3,
+        RARE = 4,
+        UNKNOWN = 5                      // found in 2.2.3 for 2 mobs
     };
 
     // values based at Holidays.dbc

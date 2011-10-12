@@ -99,7 +99,15 @@ namespace MaximusParserX
             return new WoWGuid(br.ReadUInt64());
         }
 
- 
+        public static string ValuesDump(this DefinitionBase defbase, int count)
+        {
+            return (defbase as System.IO.BinaryReader).ValuesDump(count);
+        }
+
+        public static string ValuesDump(this Reading.ReadingBase readbase, int count)
+        {
+            return (readbase as System.IO.BinaryReader).ValuesDump(count);
+        }
 
         public static string ValuesDump(this System.IO.BinaryReader reader, int count)
         {

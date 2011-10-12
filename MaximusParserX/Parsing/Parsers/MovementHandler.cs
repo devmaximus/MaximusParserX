@@ -428,8 +428,6 @@ namespace MaximusParserX.Parsing.Parsers
         }
     }
 
-
-
     public class SMSG_FLIGHT_SPLINE_SYNC_DEF : DefinitionBase
     {
         public override bool Parse()
@@ -439,6 +437,45 @@ namespace MaximusParserX.Parsing.Parsers
             var val = ReadSingle("val");
 
             var guid = ReadPackedWoWGuid("guid");
+
+            return Validate();
+        }
+    }
+
+    public class SMSG_COMPRESSED_MOVES_DEF : DefinitionBase
+    {
+        public override bool Parse()
+        {
+            ResetPosition();
+
+            int i = 0;
+
+            while (AvailableBytes > 0)
+            {
+                i++;
+
+                var size = ReadByte("[" + i + "] size");
+ 
+                SetBookmarkPosition();
+
+                GotoBookmarkPosition();
+
+                var opcodefieldkey = "[" + i + "] opcode";
+
+                var opcode = ReadUInt16(opcodefieldkey);
+
+                var opcodename = ParsingHandler.GetOpcodeName(opcode, MaximusParserX.Direction.ServerToClient, ClientBuild);
+
+                if (FieldLog.ContainsKey(opcodefieldkey)) FieldLog[opcodefieldkey] = string.Format("val: {0}, Name: {1}", FieldLog[opcodefieldkey], opcodename);
+
+                var packet = new Packet(i, base.Context.TimeStamp.AddMilliseconds(i), MaximusParserX.Direction.ServerToClient, opcode, ReadBytes(size - 2), size - 2, ClientBuild);
+
+                var context = new DefinitionContext(packet, base.Context.Reader, base.Core);
+
+                var definition = ParsingHandler.GetDefinition(context, ClientBuild, opcodename, opcode);
+
+                definition.Parse();
+            }
 
             return Validate();
         }

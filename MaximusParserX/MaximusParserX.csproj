@@ -75,7 +75,6 @@
     <Compile Include="Common\ClientBuildInfo.cs" />
     <Compile Include="Common\DamageStatistics.cs" />
     <Compile Include="Common\EnumExt.cs" />
-    <Compile Include="Common\FactionInfo.cs" />
     <Compile Include="Common\MonsterMove.cs" />
     <Compile Include="Common\MonsterMoveTransport.cs" />
     <Compile Include="Common\MovementFall.cs" />
@@ -428,6 +427,8 @@
     <Compile Include="Parsing\Version\v2_3_2_7741\Enums\UpdateFields.cs" />
     <Compile Include="Parsing\Version\v2_3_0_7561\Enums\UpdateFields.cs" />
     <Compile Include="WoW\CacheObjects\CacheContainer.cs" />
+    <Compile Include="WoW\CacheObjects\CreatureInfo.cs" />
+    <Compile Include="WoW\CacheObjects\FactionInfo.cs" />
     <Compile Include="WoW\CacheObjects\ItemText.cs" />
     <Compile Include="WoW\CacheObjects\ItemName.cs" />
     <Compile Include="WoW\CacheObjects\PetName.cs" />

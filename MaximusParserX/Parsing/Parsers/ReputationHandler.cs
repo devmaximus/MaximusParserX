@@ -10,13 +10,19 @@ namespace MaximusParserX.Parsing.Parsers
         public override bool Parse()
         {
             ResetPosition();
-            var flags = ReadInt32("flags");
 
-            for (var i = 0; i < 128; i++)
+            var count = ReadInt32("count");
+
+            Core.CurrentPlayer.FactionInfos.Clear();
+
+            for (var i = 0; i < count; i++)
             {
-                var sFlags = ReadEnum<FactionFlags>("[" + i + "] FactionFlags");
-                var sStand = ReadInt32("[" + i + "] sStand");
+                var flags = ReadEnum<FactionFlags>("[" + i + "] flags");
+                var standing = ReadInt32("[" + i + "] standing");
+
+                Core.CurrentPlayer.FactionInfos.Add(i, new WoW.CacheObjects.FactionInfo(i, flags, standing));
             }
+
             return Validate();
         }
     }

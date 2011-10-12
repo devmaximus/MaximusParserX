@@ -59,7 +59,9 @@ namespace MaximusParserX.Parsing.Parsers
 
             var creature_template = ParseCreatureTemplate();
 
-            Dump.SQL.QueryResponseHandler.AddCreatureTemplate(this.ClientBuildAmount, creature_template); 
+            Dump.SQL.QueryResponseHandler.AddCreatureTemplate(this.ClientBuildAmount, creature_template);
+
+            Core.Cache.AddCreatureInfo(new WoW.CacheObjects.CreatureInfo(creature_template));
 
             return Validate();
         }
@@ -82,10 +84,10 @@ namespace MaximusParserX.Parsing.Parsers
                 creature_template.iconname = ReadCString("iconname");   //"Directions" for guard, string unk 2.3.0.7561
             }
 
-            creature_template.flags_extra = ReadUInt32("flags_extra");  //flags
-            creature_template.type = (byte)ReadUInt32("type");
-            creature_template.family = (sbyte)ReadUInt32("family");     //family
-            creature_template.rank = (byte)ReadUInt32("rank");          //rank 
+            creature_template.flags_extra = (uint)ReadEnum<CreatureTypeFlags>("CreatureTypeFlags");  //flags
+            creature_template.type = (byte)ReadEnum<CreatureType>("CreatureType");
+            creature_template.family = (sbyte)ReadEnum<CreatureFamily>("CreatureFamily");     //family
+            creature_template.rank = (byte)ReadEnum<CreatureRank>("CreatureRank");          //rank 
 
             if (ClientBuildAmount < 9183)
             {
@@ -139,28 +141,26 @@ namespace MaximusParserX.Parsing.Parsers
         public override bool Parse()
         {
             ResetPosition();
+
             if (BaseStream.Length > 4)
             {
-                
-
                 var gameobject_template = ParseGameObjectTemplate();
-
-                Dump.SQL.QueryResponseHandler.AddGameObjectTemplate(this.ClientBuildAmount, gameobject_template); 
-   
+                Dump.SQL.QueryResponseHandler.AddGameObjectTemplate(this.ClientBuildAmount, gameobject_template);
             }
             else
             {
-                Position = BaseStream.Length;
+                MarkAsRead();
             }
+
             return Validate();
         }
 
         public MaximusParserX.Dump.SQL.Custom.gameobject_template ParseGameObjectTemplate()
         {
-            SetPosition();
             ResetPosition();
+
             var gameobject_template = new MaximusParserX.Dump.SQL.Custom.gameobject_template();
-            
+
             gameobject_template.entry = ReadUInt32("entry");
             gameobject_template.type = (byte)ReadUInt32("type");
             gameobject_template.displayid = ReadUInt32("displayid");
@@ -231,8 +231,8 @@ namespace MaximusParserX.Parsing.Parsers
 
             var item_template = ParseItemTemplate();
 
-            Dump.SQL.QueryResponseHandler.AddItemTemplate(this.ClientBuildAmount, item_template); 
-           
+            Dump.SQL.QueryResponseHandler.AddItemTemplate(this.ClientBuildAmount, item_template);
+
 
             return Validate();
 
@@ -566,45 +566,46 @@ namespace MaximusParserX.Parsing.Parsers
 
             if (ClientBuildAmount > 9551)
             {
-                playername.guid = ReadPackedWoWGuid("guid");
-                playername.unk = ReadByte("unk"); // added in 3.1
-                if (playername.unk != 1)
+                playername.Guid = ReadPackedWoWGuid("Guid");
+                playername.Unk = ReadByte("Unk"); // added in 3.1
+                if (playername.Unk != 1)
                 {
-                    playername.name = ReadCString("name"); // 6898 = Name comes first
-                    playername.bgrealm = ReadCString("bgrealm"); // realm name for cross realm BG usage
-                    playername.race = ReadByte("race");
-                    playername.gender = ReadByte("gender");
-                    playername.class_ = ReadByte("class");
+                    playername.Name = ReadCString("Name"); // 6898 = Name comes first
+                    playername.BGRealm = ReadCString("BGRealm"); // realm name for cross realm BG usage
+                    playername.Race = ReadEnum<Race>("Race", TypeCode.Byte);
+                    playername.Gender = ReadEnum<Gender>("Gender", TypeCode.Byte);
+                    playername.Class = ReadEnum<Class>("Class", TypeCode.Byte);
                 }
             }
             else
             {
-                playername.guid = ReadWoWGuid("guid");
+                playername.Guid = ReadWoWGuid("guid");
 
                 if (ClientBuildAmount > 6803)
                 {
-                    playername.name = ReadCString("name"); // 6898 = Name comes first
-                    playername.bgrealm = ReadCString("bgrealm"); // realm name for cross realm BG usage
+                    playername.Name = ReadCString("Name"); // 6898 = Name comes first
+                    playername.BGRealm = ReadCString("BGRealm"); // realm name for cross realm BG usage
                 }
                 else
                 {
-                    playername.bgrealm = ReadCString("bgrealm"); // realm name for cross realm BG usage
-                    playername.name = ReadCString("name"); // 6898 = Name comes first
+                    playername.BGRealm = ReadCString("BGRealm"); // realm name for cross realm BG usage
+                    playername.Name = ReadCString("Name"); // 6898 = Name comes first
                 }
-                playername.race = (byte)ReadUInt32("race");
-                playername.gender = (byte)ReadUInt32("gender");
-                playername.class_ = (byte)ReadUInt32("class_");
+
+                playername.Race = ReadEnum<Race>("Race", TypeCode.UInt32);
+                playername.Gender = ReadEnum<Gender>("Gender", TypeCode.UInt32);
+                playername.Class = ReadEnum<Class>("Class", TypeCode.UInt32);
             }
 
-            if (ClientBuildAmount > 7799 && playername.unk != 1)
+            if (ClientBuildAmount > 7799 && playername.Unk != 1)
             {
-                playername.declined = ReadByte("declined");
+                playername.Declined = ReadByte("Declined");
 
-                if (playername.declined == 1)
+                if (playername.Declined == 1)
                 {
                     for (int i = 0; i < 5; ++i) //MAX_DECLINED_NAME_CASES
                     {
-                        playername.declinename.Add(ReadCString("declinename" + i));
+                        playername.DeclinedNames.Add(ReadCString("declinename" + i));
                     }
                 }
             }
@@ -622,7 +623,7 @@ namespace MaximusParserX.Parsing.Parsers
             ResetPosition();
 
             var npc_text = ParseNPCText();
-       
+
             Dump.SQL.QueryResponseHandler.AddNPCText(ClientBuildAmount, npc_text);
 
             return Validate();
@@ -734,7 +735,7 @@ namespace MaximusParserX.Parsing.Parsers
             ResetPosition();
 
             var page_text = ParsePageText();
-       
+
             Dump.SQL.QueryResponseHandler.AddPageText(ClientBuildAmount, page_text);
 
             return Validate();
@@ -826,7 +827,7 @@ namespace MaximusParserX.Parsing.Parsers
 
             var quest_template = ParseQuestTemplate();
             Dump.SQL.QueryResponseHandler.AddQuestTemplate(ClientBuildAmount, quest_template);
-             
+
             return Validate();
         }
 

@@ -22,7 +22,7 @@ namespace MaximusParserX.WoW.CacheObjects
         public IDictionary<ulong, CacheObjects.PlayerName> PlayerNameCache = new Dictionary<ulong, CacheObjects.PlayerName>();
         public void AddPlayerName(CacheObjects.PlayerName playername)
         {
-            if (!PlayerNameCache.ContainsKey(playername.guid.Full)) PlayerNameCache.Add(playername.guid.Full, playername);
+            if (!PlayerNameCache.ContainsKey(playername.Guid.Full)) PlayerNameCache.Add(playername.Guid.Full, playername);
         }
 
         public IDictionary<ulong, CacheObjects.PetName> PetNameCache = new Dictionary<ulong, CacheObjects.PetName>();
@@ -35,6 +35,12 @@ namespace MaximusParserX.WoW.CacheObjects
         public void AddCharacterInfo(CharacterInfo CharacterInfo)
         {
             if (!CharacterInfoCache.ContainsKey(CharacterInfo.Guid.Full)) CharacterInfoCache.Add(CharacterInfo.Guid.Full, CharacterInfo);
+        }
+
+        public IDictionary<uint, CreatureInfo> CreatureInfoCache = new Dictionary<uint, CreatureInfo>();
+        public void AddCreatureInfo(CreatureInfo CreatureInfo)
+        {
+            if (!CreatureInfoCache.ContainsKey(CreatureInfo.Entry)) CreatureInfoCache.Add(CreatureInfo.Entry, CreatureInfo);
         }
 
         public IDictionary<string, StartInfo> StartInfoCache = new Dictionary<string, StartInfo>();

@@ -1,6 +1,7 @@
 using System;
 using MaximusParserX.Reading;
 using MaximusParserX.WoW;
+using MaximusParserX;
 
 namespace MaximusParserX.Parsing.Parsers
 {
@@ -13,11 +14,17 @@ namespace MaximusParserX.Parsing.Parsers
         public override bool Parse()
         {
             ResetPosition();
+
             var unk = ReadInt32("unk");
 
-            var seed = ReadInt32("seed");
+            if (ClientBuildAmount > 10505)
+            {
+                var seed = ReadInt32("seed");
+            }
+            var count = 5;
+            if (ClientBuildAmount > 10505) count = 8;
 
-            for (var i = 0; i < 8; i++)
+            for (var i = 0; i < count; i++)
             {
                 var rand = ReadInt32("rand");
             }
@@ -31,15 +38,26 @@ namespace MaximusParserX.Parsing.Parsers
         {
             ResetPosition();
 
-            var build = ReadInt32("build");
-            var unk1 = ReadInt32("unk1");
-            var account = ReadCString("account");
-            var unk2 = ReadInt32("unk2");
-            var clientSeed = ReadInt32("clientSeed");
-            var unk3 = ReadInt64("unk3");
-            var digest = ReadBytes(20);
+            var ClientBuild = (ClientBuild)ReadUInt16("build");
 
-            //AddonHandler.ReadClientAddonsList(packet);
+            if (ClientBuildInfo.clientVersionList.ContainsKey((int)ClientBuild))
+            {
+                var unk1 = ReadUInt16("unk1");
+            }
+            else
+            {
+                ResetPosition();
+                FieldLog.Clear();
+                ClientBuild = (ClientBuild)ReadUInt32("build");
+            }
+
+            var unk2 = ReadUInt32("unk2");
+            var account = ReadCString("account");
+            var unk3 = ReadInt32("unk3");
+            var clientSeed = ReadInt32("clientSeed");
+            var unk4 = ReadInt64("unk4");
+            var digest = ReadBytes((int)AvailableBytes);
+
             return Validate();
         }
     }
@@ -80,9 +98,9 @@ namespace MaximusParserX.Parsing.Parsers
         public void ReadAuthResponseInfo()
         {
             var billingRemaining = ReadInt32("billingRemaining");
-            var billingFlags = ReadEnum<BillingFlag>("BillingFlag", TypeCode.Byte); 
+            var billingFlags = ReadEnum<BillingFlag>("BillingFlag", TypeCode.Byte);
             var billingRested = ReadInt32("billingRested");
-            var expansion = ReadEnum<ClientType>("ClientType", TypeCode.Byte);  
+            var expansion = ReadEnum<ClientType>("ClientType", TypeCode.Byte);
         }
 
         public void ReadQueuePositionInfo()
@@ -97,7 +115,7 @@ namespace MaximusParserX.Parsing.Parsers
         public override bool Parse()
         {
             ResetPosition();
-            var guid =  ReadPackedWoWGuid("guid");
+            var guid = ReadPackedWoWGuid("guid");
             Core.SetCurrentPlayerWoWGuid(guid);
             return Validate();
         }
@@ -175,7 +193,7 @@ namespace MaximusParserX.Parsing.Parsers
         public override bool Parse()
         {
             ResetPosition();
-            var reason = ReadEnum<KickReason>("KickReason", TypeCode.Byte); 
+            var reason = ReadEnum<KickReason>("KickReason", TypeCode.Byte);
 
             if (AvailableBytes > 0)
             {
