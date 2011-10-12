@@ -117,7 +117,6 @@ namespace MaximusParserX.Parsing.Parsers
                 var guid = ReadPackedWoWGuid("guid");
             }
 
-
             if (soundId == 5775 || soundId == 5777)
             {
                 System.Diagnostics.Debug.WriteLine(base.ReaderFileName);
@@ -149,12 +148,12 @@ namespace MaximusParserX.Parsing.Parsers
             var health = ReadInt32();
             for (var i = 0; i < 6; i++)
             {
-                var power = ReadEnum<Powers>("[" + i + "] power");
+                var power = ReadEnum<Powers>(i, "power");
             }
 
             for (var i = 0; i < 5; i++)
             {
-                var stat = ReadEnum<Stats>("[" + i + "] stat");
+                var stat = ReadEnum<Stats>(i, "stat");
             }
 
             Core.SetCurrentPlayerLevel(level);
@@ -168,7 +167,7 @@ namespace MaximusParserX.Parsing.Parsers
         public override bool Parse()
         {
             ResetPosition();
-            var flag = ReadInt32();
+            var flag = ReadInt32("flag");
             return Validate();
         }
     }
@@ -180,7 +179,7 @@ namespace MaximusParserX.Parsing.Parsers
             ResetPosition();
             for (var i = 0; i < 8; i++)
             {
-                var flag = ReadInt32();
+                var flag = ReadInt32(i, "flag");
             }
             return Validate();
         }

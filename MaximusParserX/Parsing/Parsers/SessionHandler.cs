@@ -26,7 +26,7 @@ namespace MaximusParserX.Parsing.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                var rand = ReadInt32("rand");
+                var rand = ReadInt32(i, "rand");
             }
             return Validate();
         }
@@ -136,9 +136,10 @@ namespace MaximusParserX.Parsing.Parsers
         public override bool Parse()
         {
             ResetPosition();
-            var unk1 = ReadInt32("unk1");
 
+            var unk1 = ReadInt32("unk1");
             var unk2 = ReadInt32("unk2");
+
             return Validate();
         }
     }
@@ -212,7 +213,7 @@ namespace MaximusParserX.Parsing.Parsers
 
             for (var i = 0; i < lineCount; i++)
             {
-                var lineStr = ReadCString("lineStr");
+                var lineStr = ReadCString(i, "lineStr");
             }
             return Validate();
         }

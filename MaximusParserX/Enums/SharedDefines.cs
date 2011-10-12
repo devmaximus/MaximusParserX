@@ -1592,7 +1592,7 @@ namespace MaximusParserX
         LOCKTYPE_OPEN_FROM_VEHICLE = 21
     };
 
-    public enum TrainerType                                            // this is important type for npcs!
+    public enum TrainerType : int                                            // this is important type for npcs!
     {
         TRAINER_TYPE_CLASS = 0,
         TRAINER_TYPE_MOUNTS = 1,                     // on blizz it's 2

@@ -12,8 +12,8 @@ namespace MaximusParserX.Parsing.Parsers
         public override bool Parse()
         {
             ResetPosition();
-            var curTime = ReadTime("Current Time");
 
+            var curTime = ReadTime("Current Time");
             var dailyReset = ReadInt32("Daily Quest Reset");
 
             return Validate();

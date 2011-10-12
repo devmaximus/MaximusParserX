@@ -84,7 +84,7 @@ public enum PlayerSpellState
     PLAYERSPELL_REMOVED   = 3
 };
  
-public enum TrainerSpellState
+public enum TrainerSpellState : byte
 {
     TRAINER_SPELL_GREEN = 0,
     TRAINER_SPELL_RED   = 1,

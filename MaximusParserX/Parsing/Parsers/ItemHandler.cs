@@ -21,10 +21,10 @@ namespace MaximusParserX.Parsing.Parsers
             ResetPosition();
             for (var i = 0; i < 4; i++)
             {
-                var enchId = ReadInt32("enchId");
+                var enchId = ReadInt32(i, "enchId");
             }
             return Validate();
         }
     }
 }
- 
+

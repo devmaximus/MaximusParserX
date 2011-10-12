@@ -17,8 +17,8 @@ namespace MaximusParserX.Parsing.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                var flags = ReadEnum<FactionFlags>("[" + i + "] flags");
-                var standing = ReadInt32("[" + i + "] standing");
+                var flags = ReadEnum<FactionFlags>(i, "flags");
+                var standing = ReadInt32(i, "standing");
 
                 Core.CurrentPlayer.FactionInfos.Add(i, new WoW.CacheObjects.FactionInfo(i, flags, standing));
             }

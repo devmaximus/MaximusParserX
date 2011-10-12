@@ -12,25 +12,18 @@ namespace MaximusParserX.Parsing.Parsers
         public override bool Parse()
         {
             ResetPosition();
+
             var name = ReadCString("name");
-
-            var race = (Race)ReadByte();
-
-            var chClass = (Class)ReadByte();
-
-            var gender = (Gender)ReadByte();
-
+            var race = ReadEnum<Race>("Race", TypeCode.Byte);
+            var chClass = ReadEnum<Class>("Class", TypeCode.Byte);
+            var gender = ReadEnum<Gender>("Gender", TypeCode.Byte);
             var skin = ReadByte("skin");
-
             var face = ReadByte("face");
-
             var hairStyle = ReadByte("hairStyle");
-
             var hairColor = ReadByte("hairColor");
-
             var facialHair = ReadByte("facialHair");
-
             var outfitId = ReadByte("outfitId");
+
             return Validate();
         }
     }
@@ -50,9 +43,10 @@ namespace MaximusParserX.Parsing.Parsers
         public override bool Parse()
         {
             ResetPosition();
-            var guid = ReadWoWGuid("guid");
 
+            var guid = ReadWoWGuid("guid");
             var newName = ReadCString("newName");
+
             return Validate();
         }
     }
@@ -89,11 +83,11 @@ namespace MaximusParserX.Parsing.Parsers
         public override bool Parse()
         {
             ResetPosition();
+
             var hairStyle = ReadByte("hairStyle");
-
             var hairColor = ReadByte("hairColor");
-
             var facialHair = ReadByte("facialHair");
+
             return Validate();
         }
     }
@@ -113,21 +107,16 @@ namespace MaximusParserX.Parsing.Parsers
         public override bool Parse()
         {
             ResetPosition();
+
             var guid = ReadWoWGuid("guid");
-
             var name = ReadCString("name");
-
-            var gender = (Gender)ReadByte();
-
+            var gender = ReadEnum<Gender>("Gender", TypeCode.Byte);
             var skin = ReadByte("skin");
-
             var face = ReadByte("face");
-
             var hairColor = ReadByte("hairColor");
-
             var hairStyle = ReadByte("hairStyle");
-
             var facialHair = ReadByte("facialHair");
+
             return Validate();
         }
     }
@@ -141,23 +130,16 @@ namespace MaximusParserX.Parsing.Parsers
 
             if (response == ResponseCodes.RESPONSE_SUCCESS)
             {
-
                 var guid = ReadWoWGuid("guid");
-
                 var name = ReadCString("name");
-
-                var gender = (Gender)ReadByte();
-
+                var gender = ReadEnum<Gender>("Gender", TypeCode.Byte);
                 var skin = ReadByte("skin");
-
                 var face = ReadByte("face");
-
                 var hairStyle = ReadByte("hairStyle");
-
                 var hairColor = ReadByte("hairColor");
-
                 var facialHair = ReadByte("facialHair");
             }
+
             return Validate();
         }
     }
@@ -176,9 +158,11 @@ namespace MaximusParserX.Parsing.Parsers
             {
                 var guid = ReadWoWGuid("guid");
                 var name = ReadCString("name");
-                var race = ReadEnum<Race>("Race");
-                var clss = ReadEnum<Class>("Class");
-                var gender = ReadEnum<Gender>("Gender");
+
+                var race = ReadEnum<Race>("Race", TypeCode.Byte);
+                var clss = ReadEnum<Class>("Class", TypeCode.Byte);
+                var gender = ReadEnum<Gender>("Gender", TypeCode.Byte);
+
                 var skin = ReadByte("skin");
                 var face = ReadByte("face");
                 var hairStyle = ReadByte("hairStyle");
@@ -210,9 +194,7 @@ namespace MaximusParserX.Parsing.Parsers
                 for (var j = 0; j < bagcount; j++)
                 {
                     var bagDispId = ReadInt32(j, "bagDispId");
-
                     var bagInvType = ReadEnum<InventoryType>(j, "bagInvType");
-
                     var bagAuraId = ReadInt32(j, "bagAuraId");
                 }
 
@@ -232,7 +214,7 @@ namespace MaximusParserX.Parsing.Parsers
 
                         Core.Cache.AddStartInfoCache(startInfo);
 
-                        //Store.WriteData(Store.StartPositions.GetCommand(race, clss, mapId, zone, pos));
+                        //TODO store StartPositions race, clss, mapId, zone, pos
                     }
                 }
 

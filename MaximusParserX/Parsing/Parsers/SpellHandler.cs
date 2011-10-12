@@ -16,7 +16,7 @@ namespace MaximusParserX.Parsing.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                var spellId = ReadInt32("Spell ID " + i);
+                var spellId = ReadInt32(i, "spellId");
             }
 
             return Validate();
@@ -64,8 +64,8 @@ namespace MaximusParserX.Parsing.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                var spellId = ReadInt32("spellId");
-                var unk16 = ReadInt16("unk16");
+                var spellId = ReadInt32(i, "spellId");
+                var unk16 = ReadInt16(i, "unk16");
                 //var chr = SessionHandler.LoggedInCharacter;
                 //if (!chr.FirstLogin)
                 //    continue;
@@ -77,11 +77,11 @@ namespace MaximusParserX.Parsing.Parsers
 
             for (var i = 0; i < cooldownCount; i++)
             {
-                var spellId = ReadInt32("spellId");
-                var castItemId = ReadInt16("castItemId");
-                var spellCat = ReadInt16("spellCat");
-                var cooldown = ReadInt32("cooldown");
-                var catCooldown = ReadInt32("catCooldown");
+                var spellId = ReadInt32(i, "spellId");
+                var castItemId = ReadInt16(i, "castItemId");
+                var spellCat = ReadInt16(i, "spellCat");
+                var cooldown = ReadInt32(i, "cooldown");
+                var catCooldown = ReadInt32(i, "catCooldown");
             }
             return Validate();
         }
@@ -93,22 +93,27 @@ namespace MaximusParserX.Parsing.Parsers
         public override bool Parse()
         {
             ResetPosition();
+
             var targetguid = ReadPackedWoWGuid("targetguid");
+
+            int i = 0;
 
             while (AvailableBytes > 0)
             {
-                var slot = ReadByte("slot");
+                i++;
 
-                var id = ReadInt32("id");
+                var slot = ReadByte(i, "slot");
+
+                var id = ReadInt32(i, "id");
 
                 if (id > 0)
                 {
 
-                    var flags = ReadEnum<AuraFlags>("AuraFlag", TypeCode.Byte);
+                    var flags = ReadEnum<AuraFlags>(i, "AuraFlag", TypeCode.Byte);
 
-                    var level = ReadByte("level");
+                    var level = ReadByte(i, "level");
 
-                    var charges = ReadByte("charges");
+                    var charges = ReadByte(i, "charges");
 
                     if (!flags.HasFlag(AuraFlags.AFLAG_NOT_CASTER))
                     {
@@ -118,15 +123,15 @@ namespace MaximusParserX.Parsing.Parsers
                         //UInt32 UInt32_4 = ReadUInt32();
                         //UInt32 UInt32_5 = ReadUInt32();
 
-                        var unkGuid = ReadPackedWoWGuid("unkGuid");
+                        var unkGuid = ReadPackedWoWGuid(i, "unkGuid");
                     }
 
                     if (flags.HasFlag(AuraFlags.AFLAG_DURATION))
                     {
 
-                        var maxDura = ReadInt32("maxDura");
+                        var maxDura = ReadInt32(i, "maxDura");
 
-                        var dura = ReadInt32("dura");
+                        var dura = ReadInt32(i, "dura");
                     }
                 }
             }
@@ -155,21 +160,21 @@ namespace MaximusParserX.Parsing.Parsers
 
                 for (var i = 0; i < hitCount; i++)
                 {
-                    var hitGuid = ReadPackedWoWGuid("hitGuid");
+                    var hitGuid = ReadPackedWoWGuid(i, "hitGuid");
                 }
 
                 var missCount = ReadByte("missCount");
 
                 for (var i = 0; i < missCount; i++)
                 {
-                    var missGuid = ReadPackedWoWGuid("missGuid");
+                    var missGuid = ReadPackedWoWGuid(i, "missGuid");
 
-                    var missType = ReadEnum<SpellMissInfo>("misstype");
+                    var missType = ReadEnum<SpellMissInfo>(i, "misstype");
 
                     if (missType != SpellMissInfo.REFLECT)
                         continue;
 
-                    var reflectResult = ReadEnum<SpellMissInfo>("reflectResult");
+                    var reflectResult = ReadEnum<SpellMissInfo>(i, "reflectResult");
                 }
             }
 
@@ -212,7 +217,7 @@ namespace MaximusParserX.Parsing.Parsers
                     if ((mask & playerRuneState) != 0)
                         continue;
 
-                    var unk = ReadByte("unk");
+                    var unk = ReadByte(i, "unk");
                 }
             }
 
@@ -284,8 +289,8 @@ namespace MaximusParserX.Parsing.Parsers
         public override bool Parse()
         {
             ResetPosition();
-            var spellId = ReadInt32("spellId");
 
+            var spellId = ReadInt32("spellId");
             var unk = ReadInt16("unk");
 
             return Validate();

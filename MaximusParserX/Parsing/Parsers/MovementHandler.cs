@@ -132,7 +132,7 @@ namespace MaximusParserX.Parsing.Parsers
 
                     for (var i = 0; i < waypoints - 1; i++)
                     {
-                        var vec = ReadPackedVector3("PackedPosition");
+                        var vec = ReadPackedVector3(i, "PackedPosition");
 
                         var calcvec = new Vector3(vec.X - mid.X, vec.Y - mid.Y, vec.Z - mid.Z);
                     }
@@ -181,7 +181,6 @@ namespace MaximusParserX.Parsing.Parsers
 
             var pos = ReadVector3("pos");
             var mapId = ReadInt32("mapId");
-
             var zoneId = ReadInt32("zoneId");
             return Validate();
         }
@@ -196,17 +195,13 @@ namespace MaximusParserX.Parsing.Parsers
             if (Direction == Direction.ServerToClient)
             {
                 var guid = ReadPackedWoWGuid("guid");
-
                 var unk = ReadInt32("unk");
-
                 var movementinfo = ReadMovementInfo(guid);
             }
             else
             {
                 var guid = ReadPackedWoWGuid("guid");
-
                 var MoveFlag = ReadEnum<MoveFlag>("MoveFlag");
-
                 var time = ReadInt32("time");
 
             }
@@ -435,7 +430,6 @@ namespace MaximusParserX.Parsing.Parsers
             ResetPosition();
 
             var val = ReadSingle("val");
-
             var guid = ReadPackedWoWGuid("guid");
 
             return Validate();
@@ -454,24 +448,20 @@ namespace MaximusParserX.Parsing.Parsers
             {
                 i++;
 
-                var size = ReadByte("[" + i + "] size");
- 
+                var size = ReadByte(i, "size");
+
                 SetBookmarkPosition();
 
                 GotoBookmarkPosition();
 
-                var opcodefieldkey = "[" + i + "] opcode";
-
+                var opcodefieldkey = FormatFieldName(i, "opcode");
                 var opcode = ReadUInt16(opcodefieldkey);
-
                 var opcodename = ParsingHandler.GetOpcodeName(opcode, MaximusParserX.Direction.ServerToClient, ClientBuild);
 
                 if (FieldLog.ContainsKey(opcodefieldkey)) FieldLog[opcodefieldkey] = string.Format("val: {0}, Name: {1}", FieldLog[opcodefieldkey], opcodename);
 
                 var packet = new Packet(i, base.Context.TimeStamp.AddMilliseconds(i), MaximusParserX.Direction.ServerToClient, opcode, ReadBytes(size - 2), size - 2, ClientBuild);
-
                 var context = new DefinitionContext(packet, base.Context.Reader, base.Core);
-
                 var definition = ParsingHandler.GetDefinition(context, ClientBuild, opcodename, opcode);
 
                 definition.Parse();

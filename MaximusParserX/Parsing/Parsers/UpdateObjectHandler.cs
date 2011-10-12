@@ -12,11 +12,10 @@ namespace MaximusParserX.Parsing.Parsers
         public override bool Parse()
         {
             ResetPosition();
-            var guid = ReadWoWGuid("guid");
-            Console.WriteLine("GUID: " + guid);
 
+            var guid = ReadWoWGuid("guid");
             var anim = ReadBoolean("anim");
-            Console.WriteLine("Despawn Animation: " + anim);
+
             return Validate();
         }
     }
@@ -42,13 +41,13 @@ namespace MaximusParserX.Parsing.Parsers
 
                 for (int i = 0; i < blockcount; i++)
                 {
-                    var type = ReadByte_OBJECT_UPDATE_TYPE("[" + i + "] ObjUpdateType");
- 
+                    var type = ReadByte_OBJECT_UPDATE_TYPE(i, "ObjUpdateType");
+
                     switch (type)
                     {
                         case OBJECT_UPDATE_TYPE.UPDATETYPE_VALUES:
                             {
-                                var guid = ReadPackedWoWGuid("[" + i + "] UpdateValuesObjGuid");
+                                var guid = ReadPackedWoWGuid(i, "UpdateValuesObjGuid");
                                 var obj = Core.GetObjectByWoWGuid(guid);
 
                                 UpdateFieldValues(i, obj);
@@ -65,7 +64,7 @@ namespace MaximusParserX.Parsing.Parsers
                             } break;
                         case OBJECT_UPDATE_TYPE.UPDATETYPE_MOVEMENT:
                             {
-                                var guid = ReadPackedWoWGuid("[" + i + "] UpdateMovementObjGuid");
+                                var guid = ReadPackedWoWGuid(i, "UpdateMovementObjGuid");
                                 var obj = Core.GetObjectByWoWGuid(guid);
                                 UpdateMovement(i, obj.TypeID, guid);
                             } break;
@@ -78,18 +77,18 @@ namespace MaximusParserX.Parsing.Parsers
                         case OBJECT_UPDATE_TYPE.UPDATETYPE_OUT_OF_RANGE_OBJECTS:
                             {
                                 var count = ReadUInt32("count");
-                                for (long j = 0; j < count; j++)
+                                for (int j = 0; j < count; j++)
                                 {
-                                    var guid = ReadPackedWoWGuid("[" + i + "] OutOfRangeObjGuid [" + j + "]");
+                                    var guid = ReadPackedWoWGuid(i, j,"OutOfRangeObjGuid]");
                                     Core.RemoveObjectByWoWGuid(guid);
                                 }
                             } break;
                         case OBJECT_UPDATE_TYPE.UPDATETYPE_NEAR_OBJECTS:
                             {
                                 var count = ReadUInt32("count");
-                                for (long j = 0; j < count; j++)
+                                for (int j = 0; j < count; j++)
                                 {
-                                    var guid = ReadPackedWoWGuid("[" + i + "] NearObjGuid [" + j + "]");
+                                    var guid = ReadPackedWoWGuid(i, j, "NearObjGuid");
                                 }
                             } break;
                         default:
@@ -114,11 +113,11 @@ namespace MaximusParserX.Parsing.Parsers
 
             GotoBookmarkPosition();
 #endif
-            var guid = ReadPackedWoWGuid("[" + index + "] guid");
+            var guid = ReadPackedWoWGuid(index, "guid");
 
             Core.RemoveObjectByWoWGuid(guid);
 
-            var typeid = ReadEnum<TypeID>("[" + index + "] TypeID");
+            var typeid = ReadEnum<TypeID>(index, "TypeID");
             var obj = Core.CreateOrGetObject(guid, typeid);
 
             UpdateMovement(index, obj, typeid);
@@ -144,12 +143,12 @@ namespace MaximusParserX.Parsing.Parsers
 
         private bool UpdateFieldValues(int index, ObjectBase obj)
         {
-            var UpdateFieldBlockCount = ReadByte("[" + index + "] UpdateFieldBlockCount");
+            var UpdateFieldBlockCount = ReadByte(index, "UpdateFieldBlockCount");
 
             var updateMask = new int[UpdateFieldBlockCount];
             for (var i = 0; i < UpdateFieldBlockCount; i++)
             {
-                var blockIdx = ReadInt32("[" + index + "] blockIdx [" + i + "]");
+                var blockIdx = ReadInt32(index, i, "blockIdx");
                 updateMask[i] = blockIdx;
             }
 
@@ -171,7 +170,7 @@ namespace MaximusParserX.Parsing.Parsers
 
                 if (i > max) reached = i;
 
-                var updatefield = ReadUpdateField("[" + index + "] UpdateField [" + i + "]");
+                var updatefield = ReadUpdateField(index, i, "UpdateField");
 
                 if (obj != null)
                     obj.UpdateFields[i] = updatefield;
@@ -205,51 +204,51 @@ namespace MaximusParserX.Parsing.Parsers
 
             if (ClientBuildAmount > 9551)
             {
-                obj.MovementInfo.UpdateFlags = ReadUInt16_OBJECT_UPDATE_FLAGS("[" + index + "] UpdateFlags");
+                obj.MovementInfo.UpdateFlags = ReadUInt16_OBJECT_UPDATE_FLAGS(index, "UpdateFlags");
             }
             else
             {
-                obj.MovementInfo.UpdateFlags = ReadByte_OBJECT_UPDATE_FLAGS("[" + index + "] UpdateFlags");
+                obj.MovementInfo.UpdateFlags = ReadByte_OBJECT_UPDATE_FLAGS(index, "UpdateFlags");
             }
 
             // 0x20
             if ((obj.MovementInfo.UpdateFlags & OBJECT_UPDATE_FLAGS.UPDATEFLAG_LIVING) != 0)
             {
-                obj.MovementInfo.MoveFlag = ReadUInt32_MoveFlag("[" + index + "] MoveFlag");
+                obj.MovementInfo.MoveFlag = ReadUInt32_MoveFlag(index, "MoveFlag");
 
                 if (ClientBuildAmount >= 7561 && ClientBuildAmount < 9183)
                 {
-                    obj.MovementInfo.MoveFlagExtra = ReadByte_MoveFlagExtra("[" + index + "] MoveFlagExtra");   // unk 2.3.0
+                    obj.MovementInfo.MoveFlagExtra = ReadByte_MoveFlagExtra(index, "MoveFlagExtra");   // unk 2.3.0
                 }
                 else if (ClientBuildAmount >= 9183)
                 {
-                    obj.MovementInfo.MoveFlagExtra = ReadUInt16_MoveFlagExtra("[" + index + "] MoveFlagExtra");
+                    obj.MovementInfo.MoveFlagExtra = ReadUInt16_MoveFlagExtra(index, "MoveFlagExtra");
                 }
 
-                obj.MovementInfo.TimeStamp = ReadUInt32("[" + index + "] TimeStamp");
+                obj.MovementInfo.TimeStamp = ReadUInt32(index, "TimeStamp");
 
-                obj.MovementInfo.PositionInfo = ReadVector4("[" + index + "] PositionInfo");
+                obj.MovementInfo.PositionInfo = ReadVector4(index, "PositionInfo");
 
                 if ((obj.MovementInfo.MoveFlag & MoveFlag.OnTransport) != 0)
                 {
-                    obj.MovementInfo.TransportInfo = ReadMovementTransport("[" + index + "] OnTransport", obj.MovementInfo.MoveFlagExtra.Value.HasFlag(MoveFlagExtra.InterpolatedPlayerMovement));
+                    obj.MovementInfo.TransportInfo = ReadMovementTransport(index, "OnTransport", obj.MovementInfo.MoveFlagExtra.Value.HasFlag(MoveFlagExtra.InterpolatedPlayerMovement));
                 }
 
                 if (obj.MovementInfo.MoveFlag.Value.HasAnyFlag(MoveFlag.Swimming | MoveFlag.Flying) || obj.MovementInfo.MoveFlagExtra.Value.HasFlag(MoveFlagExtra.AlwaysAllowPitching))
                 {
-                    obj.MovementInfo.SwimPitch = ReadFloat("[" + index + "] SwimPitch");
+                    obj.MovementInfo.SwimPitch = ReadFloat(index, "SwimPitch");
                 }
 
-                obj.MovementInfo.FallTime = ReadUInt32("[" + index + "] FallTime");
+                obj.MovementInfo.FallTime = ReadUInt32(index, "FallTime");
 
                 if (obj.MovementInfo.MoveFlag.Value.HasFlag(MoveFlag.Falling))
                 {
-                    obj.MovementInfo.JumpInfo = ReadMovementJump("[" + index + "] FallingJumpInfo");
+                    obj.MovementInfo.JumpInfo = ReadMovementJump(index, "FallingJumpInfo");
                 }
 
                 if (obj.MovementInfo.MoveFlag.Value.HasFlag(MoveFlag.SplineElevation))
                 {
-                    obj.MovementInfo.SplineElevation = ReadFloat("[" + index + "] SplineElevation");
+                    obj.MovementInfo.SplineElevation = ReadFloat(index, "SplineElevation");
                 }
 
                 if (ClientBuildAmount >= 9183)
@@ -258,66 +257,66 @@ namespace MaximusParserX.Parsing.Parsers
                     obj.MovementInfo.Speeds = new SortedList<string, float>(8);
 
                 for (byte i = 0; i < obj.MovementInfo.Speeds.Capacity; ++i)
-                    obj.MovementInfo.Speeds.Add(i.ToString(), ReadFloat(string.Format("[" + index + "] Speed [{0}]", i)));
+                    obj.MovementInfo.Speeds.Add(i.ToString(), ReadFloat(index, i, "Speed"));
 
                 if (obj.MovementInfo.MoveFlag.Value.HasFlag(MoveFlag.SplineEnabled))
                 {
-                    obj.MovementInfo.SplineInfo.SplineFlags = ReadInt32_SplineFlags("[" + index + "] SplineFlags");
+                    obj.MovementInfo.SplineInfo.SplineFlags = ReadInt32_SplineFlags(index, "SplineFlags");
 
                     if (obj.MovementInfo.SplineInfo.SplineFlags.HasFlag(SplineFlag.FinalPoint))
                     {
-                        obj.MovementInfo.SplineInfo.SplinePoint = ReadVector3("[" + index + "] SplinePoint");
+                        obj.MovementInfo.SplineInfo.SplinePoint = ReadVector3(index, "SplinePoint");
                     }
 
                     if (obj.MovementInfo.SplineInfo.SplineFlags.HasFlag(SplineFlag.FinalTarget))
                     {
-                        obj.MovementInfo.SplineInfo.SplineFinalTargetGuid = ReadInt64("[" + index + "] SplineFinalTargetGuid");
+                        obj.MovementInfo.SplineInfo.SplineFinalTargetGuid = ReadInt64(index, "SplineFinalTargetGuid");
                     }
 
                     if (obj.MovementInfo.SplineInfo.SplineFlags.HasFlag(SplineFlag.FinalOrientation))
                     {
-                        obj.MovementInfo.SplineInfo.SplineRotation = ReadFloat("[" + index + "] splineRotation");
+                        obj.MovementInfo.SplineInfo.SplineRotation = ReadFloat(index, "splineRotation");
                     }
 
                     if (obj.MovementInfo.SplineInfo.SplineFlags.HasFlag(SplineFlag.CatmullRom))
                     {
-                        obj.MovementInfo.SplineInfo.SplineRotation = ReadFloat("[" + index + "] splineRotation");
+                        obj.MovementInfo.SplineInfo.SplineRotation = ReadFloat(index, "splineRotation");
                     }
 
-                    obj.MovementInfo.SplineInfo.SplineCurTime = ReadUInt32("[" + index + "] splineCurTime");
-                    obj.MovementInfo.SplineInfo.SplineFullTime = ReadUInt32("[" + index + "] splineFullTime");
-                    obj.MovementInfo.SplineInfo.SplineUnk1 = ReadUInt32("[" + index + "] splineUnk1");
+                    obj.MovementInfo.SplineInfo.SplineCurTime = ReadUInt32(index, "splineCurTime");
+                    obj.MovementInfo.SplineInfo.SplineFullTime = ReadUInt32(index, "splineFullTime");
+                    obj.MovementInfo.SplineInfo.SplineUnk1 = ReadUInt32(index, "splineUnk1");
 
                     if (ClientBuildAmount >= 9767)
                     {
 
-                        obj.MovementInfo.SplineInfo.SplineDurationMultiplier = ReadFloat("[" + index + "] splineDurationMultiplier");//3.1
-                        obj.MovementInfo.SplineInfo.SplineUnitInterval = ReadFloat("[" + index + "] splineUnitInterval");//3.1
-                        obj.MovementInfo.SplineInfo.SplineUnkFloat2 = ReadFloat("[" + index + "] splineUnkFloat2");//3.1
-                        obj.MovementInfo.SplineInfo.SplineHeightTime = ReadUInt32("[" + index + "] splineHeightTime"); //3.1
+                        obj.MovementInfo.SplineInfo.SplineDurationMultiplier = ReadFloat(index, "splineDurationMultiplier");//3.1
+                        obj.MovementInfo.SplineInfo.SplineUnitInterval = ReadFloat(index, "splineUnitInterval");//3.1
+                        obj.MovementInfo.SplineInfo.SplineUnkFloat2 = ReadFloat(index, "splineUnkFloat2");//3.1
+                        obj.MovementInfo.SplineInfo.SplineHeightTime = ReadUInt32(index, "splineHeightTime"); //3.1
                     }
                     else
                     {
                         if (obj.MovementInfo.SplineInfo.SplineFlags.HasFlag(SplineFlag.FinalOrientation))
                         {
-                            obj.MovementInfo.SplineInfo.SplineUnkFloat2 = ReadFloat("[" + index + "] splineUnkFloat2");
+                            obj.MovementInfo.SplineInfo.SplineUnkFloat2 = ReadFloat(index, "splineUnkFloat2");
                         }
                     }
 
-                    obj.MovementInfo.SplineInfo.SplineCount = ReadUInt32("[" + index + "] splineCount");
+                    obj.MovementInfo.SplineInfo.SplineCount = ReadUInt32(index, "splineCount");
                     obj.MovementInfo.SplineInfo.Splines = new SortedList<int, Vector3>();
 
                     for (int i = 0; i < obj.MovementInfo.SplineInfo.SplineCount; ++i)
                     {
-                        obj.MovementInfo.SplineInfo.Splines.Add(i, ReadVector3(string.Format("[" + index + "] Spline [{0}]", i)));
+                        obj.MovementInfo.SplineInfo.Splines.Add(i, ReadVector3(index, i, "Spline"));
                     }
 
                     if (ClientBuildAmount >= 9464)
                     {
-                        obj.MovementInfo.SplineInfo.SplineMode = ReadByte_SplineMode("[" + index + "] SplineMode");  // added in 3.0.8
+                        obj.MovementInfo.SplineInfo.SplineMode = ReadByte_SplineMode(index, "SplineMode");  // added in 3.0.8
                     }
 
-                    obj.MovementInfo.SplineInfo.SplineEndPoint = ReadVector3("[" + index + "] SplineEndPoint");
+                    obj.MovementInfo.SplineInfo.SplineEndPoint = ReadVector3(index, "SplineEndPoint");
                 }
             }
             else
@@ -325,50 +324,50 @@ namespace MaximusParserX.Parsing.Parsers
                 // 0x100
                 if ((obj.MovementInfo.UpdateFlags & OBJECT_UPDATE_FLAGS.UPDATEFLAG_POSITION) != 0)
                 {
-                    obj.MovementInfo.Guid_0x100 = ReadPackedWoWGuid("[" + index + "] Guid_0x100");
-                    obj.MovementInfo.PositionInfo_0x100 = ReadVector3("[" + index + "] PositionInfo_0x100");
-                    obj.MovementInfo.PositionInfo_0x100_2 = ReadVector4("[" + index + "] PositionInfo_0x100_2");
-                    obj.MovementInfo.UnknownFloat_0x100 = ReadFloat("[" + index + "] UnknownFloat_0x100");
+                    obj.MovementInfo.Guid_0x100 = ReadPackedWoWGuid(index, "Guid_0x100");
+                    obj.MovementInfo.PositionInfo_0x100 = ReadVector3(index, "PositionInfo_0x100");
+                    obj.MovementInfo.PositionInfo_0x100_2 = ReadVector4(index, "PositionInfo_0x100_2");
+                    obj.MovementInfo.UnknownFloat_0x100 = ReadFloat(index, "UnknownFloat_0x100");
                 }
                 else
                 {
                     // 0x40
                     if ((obj.MovementInfo.UpdateFlags & OBJECT_UPDATE_FLAGS.UPDATEFLAG_HAS_POSITION) != 0)
                     {
-                        obj.MovementInfo.PositionInfo_0x40 = ReadVector4("[" + index + "] PositionInfo_0x40");
+                        obj.MovementInfo.PositionInfo_0x40 = ReadVector4(index, "PositionInfo_0x40");
                     }
                 }
             }
 
             if ((obj.MovementInfo.UpdateFlags & OBJECT_UPDATE_FLAGS.UPDATEFLAG_LOWGUID) != 0)
             {
-                obj.MovementInfo.LowGuid = ReadInt32("[" + index + "] LowGuid");
+                obj.MovementInfo.LowGuid = ReadInt32(index, "LowGuid");
             }
 
             if ((obj.MovementInfo.UpdateFlags & OBJECT_UPDATE_FLAGS.UPDATEFLAG_HIGHGUID) != 0)
             {
-                obj.MovementInfo.HighGuid = ReadInt32("[" + index + "] HighGuid");
+                obj.MovementInfo.HighGuid = ReadInt32(index, "HighGuid");
             }
 
             if ((obj.MovementInfo.UpdateFlags & OBJECT_UPDATE_FLAGS.UPDATEFLAG_HAS_TARGET) != 0)
             {
-                obj.MovementInfo.FullGuid = ReadPackedWoWGuid("[" + index + "] FullGuid");
+                obj.MovementInfo.FullGuid = ReadPackedWoWGuid(index, "FullGuid");
             }
 
             if ((obj.MovementInfo.UpdateFlags & OBJECT_UPDATE_FLAGS.UPDATEFLAG_TRANSPORT) != 0)
             {
-                obj.MovementInfo.TransportTime = ReadUInt32("[" + index + "] TransportTime");
+                obj.MovementInfo.TransportTime = ReadUInt32(index, "TransportTime");
             }
 
             if (ClientBuildAmount >= 9183 && (obj.MovementInfo.UpdateFlags & OBJECT_UPDATE_FLAGS.UPDATEFLAG_VEHICLE) != 0)
             {
-                obj.MovementInfo.VehicleId = ReadInt32("[" + index + "] VehicleId");
-                obj.MovementInfo.FacingAdjustement = ReadFloat("[" + index + "] FacingAdjustement");
+                obj.MovementInfo.VehicleId = ReadInt32(index, "VehicleId");
+                obj.MovementInfo.FacingAdjustement = ReadFloat(index, "FacingAdjustement");
             }
 
             if ((obj.MovementInfo.UpdateFlags & OBJECT_UPDATE_FLAGS.UPDATEFLAG_ROTATION) != 0)
             {
-                obj.MovementInfo.GameObjectRotation = ReadPackedQuaternion("[" + index + "] GameObjectRotation");
+                obj.MovementInfo.GameObjectRotation = ReadPackedQuaternion(index, "GameObjectRotation");
             }
         }
     }
